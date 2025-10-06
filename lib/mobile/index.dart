@@ -225,12 +225,6 @@ class RiwayatPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text("Tutup"),
-                              ),
-                            ],
                           ),
                         );
                       },
@@ -336,29 +330,7 @@ class RiwayatPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
                                 const SizedBox(height: 20),
-
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: ElevatedButton.icon(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF3C3B8B),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.white,
-                                    ),
-                                    label: const Text(
-                                      "Tutup",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
