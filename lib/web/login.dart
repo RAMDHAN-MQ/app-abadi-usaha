@@ -7,10 +7,10 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF3F3D9D), // Background ungu
+      backgroundColor: const Color(0xFF3F3D9D),
       body: Center(
         child: Container(
-          width: 400, // form lebih kecil
+          width: 400,
           padding: const EdgeInsets.all(25),
           decoration: BoxDecoration(
             color: Colors.grey[300],
@@ -19,7 +19,6 @@ class LoginPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Ganti bagian Logo
               Image.asset("assets/logo.png", width: 80, height: 80),
               const SizedBox(height: 10),
 
@@ -30,7 +29,6 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Username Field
               TextField(
                 controller: usernameController,
                 decoration: InputDecoration(
@@ -49,7 +47,6 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 15),
 
-              // Password Field
               TextField(
                 controller: passwordController,
                 obscureText: true,
@@ -69,12 +66,12 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // Tombol Login
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3F3D9D),
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -89,7 +86,6 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 15),
 
-              // Link ke Register
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/register');
