@@ -8,7 +8,7 @@
         <div class="text-center mb-3">
             {{-- Logo --}}
             <img src="{{ asset('storage/asset/logo.png') }}"  alt="Logo" style="width: 50px; height: 50px;">
-            <h4 class="fw-bold mt-2">Registrasi</h4>
+            <h4 class="fw-bold mt-2" style="color: #3C3B8B;">Registrasi</h4>
         </div>
 
         {{-- Form Register --}}
