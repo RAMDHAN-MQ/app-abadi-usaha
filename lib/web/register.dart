@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
-import 'index.dart';
 
 class RegisterPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -82,17 +80,14 @@ class RegisterPage extends StatelessWidget {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF3F3D9D),
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
                     onPressed: () {
-                      // Setelah register langsung ke IndexPage
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => IndexPage()),
-                      );
+                      Navigator.pushReplacementNamed(context, '/beranda');
                     },
                     child: const Text(
                       "Register",
@@ -105,10 +100,7 @@ class RegisterPage extends StatelessWidget {
                 // Link ke Login
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
+                    Navigator.pushNamed(context, '/login');
                   },
                   child: RichText(
                     text: TextSpan(

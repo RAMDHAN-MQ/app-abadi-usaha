@@ -50,7 +50,9 @@ class IndexPage extends StatelessWidget {
                   Row(
                     children: [
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/register');
+                        },
                         child: const Text(
                           "Daftar",
                           style: TextStyle(color: Colors.white),
@@ -58,7 +60,9 @@ class IndexPage extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                         ),
@@ -160,7 +164,7 @@ class IndexPage extends StatelessWidget {
             const Text(
               "Layanan Kami",
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF2E2575),
               ),
@@ -169,13 +173,13 @@ class IndexPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildServiceCard("Sedot WC", "Layanan Sedot WC-de"),
+                _buildServiceCard("Sedot WC", "Layanan Sedot WC"),
                 const SizedBox(width: 20),
                 _buildServiceCard("Pelancaran", "Pelancaran Tersumbat"),
               ],
             ),
 
-            const SizedBox(height: 100),
+            const SizedBox(height: 40),
 
             Container(
               width: double.infinity,
@@ -192,23 +196,45 @@ class IndexPage extends StatelessWidget {
                   const Text(
                     "Mengapa Harus Memilih Kami",
                     style: TextStyle(
-                      fontSize: 22,
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 30),
-                  Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                      6,
-                      (index) => Container(
-                        width: 150,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(12),
+                      3,
+                      (index) => Padding(
+                        padding: EdgeInsets.only(right: index < 2 ? 20 : 0),
+                        child: Container(
+                          width: 300,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      3,
+                      (index) => Padding(
+                        padding: EdgeInsets.only(right: index < 2 ? 20 : 0),
+                        child: Container(
+                          width: 300,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                       ),
                     ),
@@ -222,23 +248,45 @@ class IndexPage extends StatelessWidget {
             const Text(
               "Testimoni",
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF2E2575),
               ),
             ),
             const SizedBox(height: 20),
-            Wrap(
-              spacing: 20,
-              runSpacing: 20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
-                6,
-                (index) => Container(
-                  width: 150,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
+                3,
+                (index) => Padding(
+                  padding: EdgeInsets.only(right: index < 2 ? 20 : 0),
+                  child: Container(
+                    width: 300,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                3,
+                (index) => Padding(
+                  padding: EdgeInsets.only(right: index < 2 ? 20 : 0),
+                  child: Container(
+                    width: 300,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -248,7 +296,7 @@ class IndexPage extends StatelessWidget {
 
             // 🔹 FOOTER
             Container(
-              padding: const EdgeInsets.all(40),
+              padding: const EdgeInsets.all(100),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Color(0xFF3B3486), Color(0xFF2E2575)],
@@ -264,35 +312,34 @@ class IndexPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          "Butuh Konsultasi..?",
+                          "Butuh Konsultasi..?\nSilahkan kontak kami\nKami Siap Membantu",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 40,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Silahkan kontak kami\nKami Siap Membantu",
-                          style: TextStyle(color: Colors.white70),
-                        ),
                         SizedBox(height: 20),
                         Text(
+                          "Kontak kami di:",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        Text(
                           "📍 Jl. Imam Bonjol No.38, Kediri",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                         Text(
                           "📞 0821-4239-5050",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                         Text(
                           "✉️ abadiusaha@gmail.com",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],
                     ),
                   ),
-                  Expanded(child: Image.asset("assets/truk.png", height: 150)),
+                  Expanded(child: Image.asset("assets/truk.png", height: 350)),
                 ],
               ),
             ),
@@ -313,7 +360,6 @@ class IndexPage extends StatelessWidget {
     );
   }
 
-  // widget helper navbar item
   Widget _buildNavItem(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -324,29 +370,30 @@ class IndexPage extends StatelessWidget {
     );
   }
 
-  // widget helper card layanan
   static Widget _buildServiceCard(String title, String desc) {
     return Container(
-      width: 150,
-      height: 120,
+      width: 300,
+      height: 300,
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Icon(Icons.build, size: 40, color: Colors.blue),
-            const SizedBox(height: 10),
+            Padding(padding:  const EdgeInsets.only(top: 40)),
+            const Icon(Icons.circle, size: 70, color: Color(0xFF2E2575)),
             Text(
               title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Color(0xFF2E2575),
+                fontSize: 25,
               ),
             ),
-            Text(desc, style: const TextStyle(fontSize: 12)),
+            Text(desc, style: const TextStyle(fontSize: 15)),
+            Padding(padding:  const EdgeInsets.only(bottom: 40)),
           ],
         ),
       ),
