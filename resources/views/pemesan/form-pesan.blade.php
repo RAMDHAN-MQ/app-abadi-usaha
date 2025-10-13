@@ -66,11 +66,11 @@
 <div class="form-container">
     <h2>Form Pemesanan</h2>
 
-    <form action="" method="POST">
+    <form action="{{ route('pemesan.form.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">
-            <label for="nama" class="form-label">Nama</label>
+            <label for="name" class="form-label">Nama</label>
             <input type="text" id="nama" name="nama" class="form-control" placeholder="Masukkan nama anda" required>
         </div>
 
@@ -79,22 +79,23 @@
             <button type="button" class="btn-maps mb-2" onclick="toggleMap()">📍 Pilih dengan Maps</button>
             <div id="map"></div>
             <textarea id="alamat" name="alamat" class="form-control mt-2" rows="3" placeholder="Masukkan alamat lengkap" required></textarea>
-            <input type="text" id="detail alamat" name="nama" class="form-control" placeholder="Detail alamat anda (rumah warna hijau)" required>
+            <input type="text" id="detail alamat" name="detail_alamat" class="form-control" placeholder="Detail alamat anda (rumah warna hijau)" required>
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">
         </div>
 
         <div class="mb-3">
-            <label for="no_hp" class="form-label">Nomor HP</label>
-            <input type="text" id="no_hp" name="no_hp" class="form-control" placeholder="Contoh: 0812xxxxxxxx" required>
+            <label for="no_telp" class="form-label">Nomor HP</label>
+            <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="Contoh: 0812xxxxxxxx" required>
         </div>
 
         <div class="mb-3">
             <label for="layanan" class="form-label">Jenis Layanan</label>
             <select id="layanan" name="layanan" class="form-select" required>
                 <option value="" selected disabled>Pilih layanan...</option>
-                <option value="Sedot WC">Sedot WC</option>
-                <option value="Pelancaran Saluran">Pelancaran Saluran</option>
+                @foreach($layanan as $item)
+                <option value="{{ $item->id }}">{{ $item->nama_layanan }}</option>
+                @endforeach
             </select>
         </div>
 

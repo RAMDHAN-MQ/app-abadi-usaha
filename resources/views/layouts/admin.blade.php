@@ -96,7 +96,7 @@
         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
             <span class="icon">🗂</span><span>Dashboard</span>
         </a>
-        <a href="#" class="{{ request()->routeIs('admin.pemesanan*') ? 'active' : '' }}">
+        <a href="{{ route('admin.pemesanan') }}" class="{{ request()->routeIs('admin.pemesanan*') ? 'active' : '' }}">
             <span class="icon">📧</span><span>Pemesanan</span>
         </a>
         <a href="{{ route('admin.layanan') }}" class="{{ request()->routeIs('admin.layanan*') ? 'active' : '' }}">
@@ -105,13 +105,15 @@
         <a href="{{ route('admin.petugas') }}" class="{{ request()->routeIs('admin.petugas*') ? 'active' : '' }}">
             <span class="icon">👷‍♂️</span><span>Kelola Petugas</span>
         </a>
-        <a href="#" class="{{ request()->routeIs('admin.gaji*') ? 'active' : '' }}">
+        <a href="{{ route('admin.gaji') }}" class="{{ request()->routeIs('admin.gaji*') ? 'active' : '' }}">
             <span class="icon">💸</span><span>Kelola Gaji</span>
         </a>
         <hr style="border: 1px solid #ffffff; opacity: 0.6; margin: 0 0px;">
-        <a href="#">
-            <span class="icon">🚪</span><span>Logout</span>
-        </a>
+        <form action="{{ route('logout') }}" method="POST" class="p-3">
+            @csrf
+            <button type="submit" class="dropdown-item text-danger"><span>Logout</span></button>
+        </form>
+
     </div>
 
 

@@ -19,4 +19,9 @@ class Layanan extends Model
         'updated_at',
         'created_at',
     ];
+
+    public function pemesan_relasi()
+    {
+        return $this->hasMany(Pemesan::class, 'layanan_id');
+    }
 }

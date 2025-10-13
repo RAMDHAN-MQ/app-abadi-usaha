@@ -77,25 +77,60 @@
 
 <body>
 
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar navbar-expand-lg bg-primary-custom navbar-dark py-3 sticky-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="#">Abadi Usaha</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-3">
-                    <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#mengapa">Tentang</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
-                    <li class="nav-item"><a class="btn btn-light text-primary-custom ms-lg-3 px-3 fw-semibold" href="login">Masuk</a></li>
-                    <li class="nav-item"><a class="nav-link" href="registrasi">Daftar</a></li>
-                </ul>
-            </div>
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg bg-primary-custom navbar-dark py-3 sticky-top shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center">
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold fs-4" href="#">Abadi Usaha</a>
+
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu Tengah -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav text-center gap-3">
+                <li class="nav-item"><a class="nav-link fw-semibold text-white" href="#beranda">Beranda</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold text-white" href="#layanan">Layanan</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold text-white" href="#mengapa">Tentang</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold text-white" href="#kontak">Kontak</a></li>
+            </ul>
         </div>
-    </nav>
+
+        <!-- Profil/Login di Kanan -->
+        <div class="d-flex align-items-center">
+            @guest
+                <a class="btn btn-light text-primary-custom fw-semibold px-3 me-2" href="{{ route('login') }}">Masuk</a>
+                <a class="btn btn-outline-light fw-semibold px-3" href="{{ route('register') }}">Daftar</a>
+            @else
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @if(Auth::user()->gambar)
+                            <img src="{{ asset('storage/' . Auth::user()->gambar) }}" 
+                                alt="Profil" class="rounded-circle me-2" width="35" height="35" 
+                                style="object-fit: cover; border: 2px solid #fff;">
+                        @else
+                            <span class="me-2 fs-4">👤</span>
+                        @endif
+                        <span class="fw-semibold">{{ Auth::user()->name }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li><a class="dropdown-item" href="{{ route('pemesan.profil') }}">Profil Saya</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item text-danger">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            @endguest
+        </div>
+    </div>
+</nav>
+
 
     <!-- ===== HERO ===== -->
     <section id="beranda" class="bg-primary-custom text-white">
@@ -104,7 +139,7 @@
                 <div class="col-lg-6">
                     <h1 class="fw-bold display-5 mb-3">Membantu Melancarkan<br>Saluran WC</h1>
                     <p class="lead mb-4">Abadi Usaha hadir untuk melayani sedot WC, pelancaran saluran, dan perawatan sanitasi rumah Anda.</p>
-                    <a href="{{ route('form-pesan') }}" class="btn btn-light text-primary-custom fw-semibold px-4 py-2 rounded-pill">Pesan Sekarang</a>
+                    <a href="{{ route('pemesan.form.pemesanan') }}" class="btn btn-light text-primary-custom fw-semibold px-4 py-2 rounded-pill">Pesan Sekarang</a>
                 </div>
                 <div class="col-lg-6 text-center">
                     <img src="{{ asset('storage/asset/org_sedot.png') }}" alt="Petugas Sedot WC" class="img-fluid" style="max-width: 380px;">
@@ -119,18 +154,20 @@
             <h2 class="fw-bold mb-5 text-primary-custom">Layanan Kami</h2>
             <div class="row justify-content-center g-4">
                 <div class="col-md-4">
-                    <div class="card py-5 shadow-sm" style="height: 500px;">
+                    <div class="card py-5 shadow-sm" style="height: 400px;">
                         <div class="card-body">
                             <h5 class="fw-bold text-primary-custom">Sedot WC</h5>
-                            <p class="text-muted mt-3">Layanan cepat, bersih, dan profesional untuk kebutuhan sanitasi Anda.</p>
+                            <p class="text-muted mt-3">Kami menyediakan layanan sedot WC cepat, bersih, dan profesional untuk rumah tangga, kantor, restoran, maupun gedung komersial.
+                                Tim kami menggunakan peralatan modern dan aman, memastikan penyedotan dilakukan secara tuntas tanpa menimbulkan bau atau kerusakan pada saluran pembuangan.
+                                Layanan ini juga mencakup pemeriksaan tangki septik serta perawatan berkala untuk mencegah masalah di kemudian hari.</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card py-5 shadow-sm" style="height: 500px;">
+                    <div class="card py-5 shadow-sm" style="height: 400px;">
                         <div class="card-body">
                             <h5 class="fw-bold text-primary-custom">Pelancaran</h5>
-                            <p class="text-muted mt-3">Atasi saluran mampet dengan tenaga berpengalaman kami.</p>
+                            <p class="text-muted mt-3">Kami melayani pelancaran saluran air, wastafel, kamar mandi, dan pembuangan yang tersumbat menggunakan alat bertekanan tinggi. Dikerjakan oleh tenaga ahli berpengalaman, proses dilakukan dengan cepat dan tanpa merusak instalasi pipa. Cocok untuk Anda yang mengalami masalah saluran mampet di rumah, kantor, atau tempat usaha dengan hasil yang bersih dan tahan lama.</p>
                         </div>
                     </div>
                 </div>
@@ -139,20 +176,87 @@
     </section>
 
     <!-- ===== MENGAPA HARUS MEMILIH KAMI ===== -->
-    <section id="mengapa" class="bg-primary-custom text-white text-center" >
+    <section id="mengapa" class="bg-primary-custom text-white text-center">
         <div class="container">
             <h2 class="fw-bold mb-5">Mengapa Harus Memilih Kami</h2>
             <div class="row g-4">
-                @for ($i = 1; $i <= 6; $i++)
-                    <div class="col-md-4">
+
+                <!-- Keunggulan 1 -->
+                <div class="col-md-4">
                     <div class="card bg-light text-primary-custom py-5">
-                        <div class="card-body fw-semibold" style="height: 150px;">Keunggulan {{ $i }}</div>
+                        <div class="card-body fw-semibold" style="height: 150px;">
+                            🔧 Tenaga Profesional dan Berpengalaman
+                            <p class="mt-2 text-muted small">
+                                Dikerjakan oleh tim ahli yang berpengalaman bertahun-tahun dalam menangani berbagai permasalahan saluran air dan septic tank.
+                            </p>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Keunggulan 2 -->
+                <div class="col-md-4">
+                    <div class="card bg-light text-primary-custom py-5">
+                        <div class="card-body fw-semibold" style="height: 150px;">
+                            ⚡ Pelayanan Cepat dan Tepat Waktu
+                            <p class="mt-2 text-muted small">
+                                Kami siap merespons panggilan pelanggan dengan cepat dan menyelesaikan pekerjaan sesuai jadwal yang telah disepakati.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keunggulan 3 -->
+                <div class="col-md-4">
+                    <div class="card bg-light text-primary-custom py-5">
+                        <div class="card-body fw-semibold" style="height: 150px;">
+                            💧 Peralatan Modern dan Aman
+                            <p class="mt-2 text-muted small">
+                                Menggunakan peralatan vakum dan tekanan tinggi yang mutakhir untuk memastikan hasil bersih tanpa merusak instalasi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keunggulan 4 -->
+                <div class="col-md-4">
+                    <div class="card bg-light text-primary-custom py-5">
+                        <div class="card-body fw-semibold" style="height: 150px;">
+                            💰 Harga Transparan dan Terjangkau
+                            <p class="mt-2 text-muted small">
+                                Biaya layanan dijelaskan secara terbuka sebelum pekerjaan dimulai, tanpa tambahan biaya tersembunyi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keunggulan 5 -->
+                <div class="col-md-4">
+                    <div class="card bg-light text-primary-custom py-5">
+                        <div class="card-body fw-semibold" style="height: 150px;">
+                            🧾 Garansi Kepuasan Pelanggan
+                            <p class="mt-2 text-muted small">
+                                Kami memberikan jaminan kepuasan terhadap hasil kerja. Jika ada keluhan, tim kami siap menindaklanjuti dengan cepat.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keunggulan 6 -->
+                <div class="col-md-4">
+                    <div class="card bg-light text-primary-custom py-5">
+                        <div class="card-body fw-semibold" style="height: 150px;">
+                            🌱 Ramah Lingkungan
+                            <p class="mt-2 text-muted small">
+                                Proses pembuangan limbah dilakukan sesuai standar lingkungan agar tetap aman dan tidak mencemari sekitar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            @endfor
-        </div>
         </div>
     </section>
+
 
     <!-- ===== TESTIMONI ===== -->
     <section id="testimoni" class="bg-light-custom text-center">
@@ -161,8 +265,8 @@
             <div class="row g-4">
                 @for ($i = 1; $i <= 6; $i++)
                     <div class="col-md-4">
-                    <div class="card shadow-sm p-4" >
-                        <p class="fst-italic mb-3" >"Pelayanan cepat, sopan, dan hasilnya memuaskan."</p>
+                    <div class="card shadow-sm p-4">
+                        <p class="fst-italic mb-3">"Pelayanan cepat, sopan, dan hasilnya memuaskan."</p>
                         <h6 class="fw-bold mb-0">Pelanggan {{ $i }}</h6>
                     </div>
             </div>
