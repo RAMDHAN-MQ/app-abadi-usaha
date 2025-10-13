@@ -31,16 +31,27 @@
         }
 
         .sidebar a {
-            color: #cfcfcf;
-            display: block;
-            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
             text-decoration: none;
+            padding: 8px 12px;
+            margin: 7px;
         }
 
         .sidebar a:hover,
         .sidebar a.active {
             background: #fff;
             color: #313473;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .icon {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
         }
 
         .content {
@@ -53,6 +64,7 @@
             background-color: #313473;
             color: white;
         }
+
         .btn-tambah:hover {
             background-color: #1f202eff;
             color: white;
@@ -62,34 +74,52 @@
             background-color: #D9D9D9;
             color: black;
         }
+
         .btn-kembali:hover {
             background-color: #888888ff;
             color: white;
         }
 
-        th{ text-align: center; }
+        th {
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="sidebar">
-        <h4 class="text-center">ABADI USAHA</h4>
-        <hr class="bg-light mb-0">
-        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-        <a href="#">Pemesanan</a>
-        <a href="{{ route('admin.layanan') }}">Kelola Layanan</a>
-        <a href="#">Kelola Petugas</a>
-        <a href="#">Kelola Pemesan</a>
-        <a href="#">Kelola Gaji</a>
-        <a href="#">Logout</a>
+        <div class="text-center">
+            <h5 class="fw-bold mb-2">ABADI USAHA</h5>
+            <hr style="border: 1px solid #ffffff; opacity: 0.6; margin: 0 0px;">
+        </div>
+        <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <span class="icon">🗂</span><span>Dashboard</span>
+        </a>
+        <a href="#" class="{{ request()->routeIs('admin.pemesanan*') ? 'active' : '' }}">
+            <span class="icon">📧</span><span>Pemesanan</span>
+        </a>
+        <a href="{{ route('admin.layanan') }}" class="{{ request()->routeIs('admin.layanan*') ? 'active' : '' }}">
+            <span class="icon">⚙</span><span>Kelola Layanan</span>
+        </a>
+        <a href="#" class="{{ request()->routeIs('admin.petugas*') ? 'active' : '' }}">
+            <span class="icon">👷‍♂️</span><span>Kelola Petugas</span>
+        </a>
+        <a href="#" class="{{ request()->routeIs('admin.gaji*') ? 'active' : '' }}">
+            <span class="icon">💸</span><span>Kelola Gaji</span>
+        </a>
+        <hr style="border: 1px solid #ffffff; opacity: 0.6; margin: 0 0px;">
+        <a href="#">
+            <span class="icon">🚪</span><span>Logout</span>
+        </a>
     </div>
+
 
     <div class="content">
         @yield('content')
     </div>
 
-    
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
@@ -97,25 +127,25 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: "{{ session('success') }}",
-                confirmButtonColor: '#102c84',
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        </script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: "{{ session('success') }}",
+            confirmButtonColor: '#102c84',
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    </script>
     @endif
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.btn-delete');
 
             deleteButtons.forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     const form = this.closest('form');
 
                     Swal.fire({
