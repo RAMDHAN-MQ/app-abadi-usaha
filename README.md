@@ -1,4 +1,4 @@
-# step 1 🤢
+# install nek local 🤢
 ## clone repo
 ```bash
 git clone -b laravel https://github.com/RAMDHAN-MQ/app-abadi-usaha.git
