@@ -6,7 +6,7 @@
 <div class="container-fluid mt-4 px-5">
     <h4 class="fw-bold mb-4">Daftar Petugas</h4>
     <div class="mb-3">
-        <a href="{{ route('admin.layanan.create') }}" class="btn btn-tambah">
+        <a href="{{ route('admin.petugas.create') }}" class="btn btn-tambah">
             <i class="bi bi-plus"></i> Tambah
         </a>
     </div>

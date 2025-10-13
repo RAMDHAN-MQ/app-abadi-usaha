@@ -12,4 +12,9 @@ class PekerjaController extends Controller
         $petugas = Users::all();
         return view('admin.petugas.index', compact('petugas'));
     }
+
+    public function create()
+    {
+        return view('admin.layanan.create');
+    }
 }

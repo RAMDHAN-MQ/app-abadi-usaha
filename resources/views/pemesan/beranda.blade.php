@@ -91,6 +91,7 @@
                     <li class="nav-item"><a class="nav-link" href="#mengapa">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
                     <li class="nav-item"><a class="btn btn-light text-primary-custom ms-lg-3 px-3 fw-semibold" href="login">Masuk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registrasi">Daftar</a></li>
                 </ul>
             </div>
         </div>

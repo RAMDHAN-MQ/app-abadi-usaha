@@ -36,6 +36,7 @@ Route::controller(LayananController::class)->group(function() {
 
 Route::controller(PekerjaController::class)->group(function() {
     Route::get('/admin/petugas', 'index')->name('admin.petugas');
+    Route::get('/admin/petugas/create', 'create')->name('admin.petugas.create');
 });
 
 Route::get('/', [PemesanController::class, 'index'])->name('beranda');
