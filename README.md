@@ -4,6 +4,8 @@ bukak folder sing digae -> bukak cmd
 ```bash
 git clone -b flutter https://github.com/RAMDHAN-MQ/app-abadi-usaha.git
 ```
+## cd ndek folder e 
+
 ## install dependencies
 ```bash
 flutter pub get
