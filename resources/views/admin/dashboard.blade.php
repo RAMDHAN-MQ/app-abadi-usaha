@@ -58,7 +58,7 @@
 </style>
 
 
-<div class="container-fluid">
+<div class="container-fluid mt-4 px-5">
     <div class="row g-3 align-items-stretch mb-3">
         <div class="col-lg-4 col-md-6">
             <div class="stat-card">

@@ -102,7 +102,7 @@
         <a href="{{ route('admin.layanan') }}" class="{{ request()->routeIs('admin.layanan*') ? 'active' : '' }}">
             <span class="icon">⚙</span><span>Kelola Layanan</span>
         </a>
-        <a href="#" class="{{ request()->routeIs('admin.petugas*') ? 'active' : '' }}">
+        <a href="{{ route('admin.petugas') }}" class="{{ request()->routeIs('admin.petugas*') ? 'active' : '' }}">
             <span class="icon">👷‍♂️</span><span>Kelola Petugas</span>
         </a>
         <a href="#" class="{{ request()->routeIs('admin.gaji*') ? 'active' : '' }}">

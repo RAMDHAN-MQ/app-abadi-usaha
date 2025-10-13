@@ -1,33 +1,33 @@
 @extends('layouts.admin')
 
-@section('title', 'Layanan')
+@section('title', 'Pegawai')
 
 @section('content')
 <div class="container-fluid mt-4 px-5">
-    <h4 class="fw-bold mb-4">Daftar Layanan</h4>
+    <h4 class="fw-bold mb-4">Daftar Petugas</h4>
     <div class="mb-3">
         <a href="{{ route('admin.layanan.create') }}" class="btn btn-tambah">
             <i class="bi bi-plus"></i> Tambah
         </a>
     </div>
 
-    <table id="tabelLayanan" class="table table-bordered table-striped mt-3">
+    <table id="tabelPetugas" class="table table-bordered table-striped mt-3">
         <thead>
             <tr class="table-secondary">
                 <th>No.</th>
-                <th>Nama Layanan</th>
-                <th>Keterangan</th>
-                <th>Harga</th>
+                <th>Nama</th>
+                <th>Status</th>
+                <th>Job</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($layanan as $item)
+            @foreach ($petugas as $item)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $item->nama_layanan }}</td>
-                <td>{{ $item->keterangan }}</td>
-                <td class="text-end">Rp{{ number_format($item->harga, 0, ',', '.') }}</td>
+                <td>{{ $item->name }}</td>
+                <td>{{ $item->status }}</td>
+                <td class="text-end"></td>
                 <td class="text-center">
                     <form action="{{ route('admin.layanan.destroy', $item->id) }}" method="POST">
                         @csrf
@@ -47,7 +47,7 @@
 @section('script')
 <script>
     $(document).ready(function() {
-        $('#tabelLayanan').DataTable({
+        $('#tabelPetugas').DataTable({
             "language": {
                 "search": "Cari:",
                 "lengthMenu": "Tampilkan _MENU_ data per halaman",

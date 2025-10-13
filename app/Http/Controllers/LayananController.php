@@ -55,4 +55,27 @@ class LayananController extends Controller
 
         return redirect()->route('admin.layanan')->with('success', 'Data Berhasil Dihapus');
     }
+
+    public function edit($id)
+    {
+        $layanan = Layanan::findOrFail($id);
+        return view('admin.layanan.edit', compact('layanan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $layanan = Layanan::findOrFail($id);
+
+        if ($request->hasFile('icon')) {
+            $iconPath = $request->file('icon')->store('icon_layanan', 'public');
+            $layanan->icon = $iconPath;
+        }
+
+        $layanan->nama_layanan = $request->nama_layanan;
+        $layanan->harga = $request->harga;
+        $layanan->keterangan = $request->keterangan;
+        $layanan->save();
+
+        return redirect()->route('admin.layanan')->with('success', 'Data layanan berhasil diperbarui.');
+    }
 }
