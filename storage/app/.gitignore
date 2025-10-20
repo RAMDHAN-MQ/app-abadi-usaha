@@ -3,6 +3,6 @@
 !public/
 !public/icon_layanan/
 !public/asset/
-!public/foto_profil
-!public/gambar_users
+!public/foto_profil/
+!public/gambar_users/
 !.gitignore
