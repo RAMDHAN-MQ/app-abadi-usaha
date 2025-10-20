@@ -16,7 +16,7 @@ class DashboardController extends Controller
 
         // Pendapatan hari ini
         $todayIncome = Pemesan::whereDate('created_at', Carbon::today())
-            ->where('status', 'Selesai')
+            ->where('status', 'selesai')
             ->sum(DB::raw('harga + ongkir'));
 
         // Total pelanggan unik
@@ -24,23 +24,46 @@ class DashboardController extends Controller
 
         // Data chart keuntungan per bulan
         $chartKeuntungan = Pemesan::selectRaw('MONTH(created_at) as bulan, SUM(harga + ongkir) as total')
-            ->where('status', 'Selesai')
+            ->where('status', 'selesai')
             ->groupBy('bulan')
             ->orderBy('bulan')
+            ->get()
+            ->keyBy(fn($item) => (int) $item->bulan) // key integer
             ->pluck('total', 'bulan');
 
+
+        $bulanArray = [];
+        $pendapatanArray = [];
+
+        foreach (range(1, 12) as $i) {
+            $bulanArray[] = Carbon::create()->month($i)->format('M');
+            $pendapatanArray[] = $chartKeuntungan[$i] ?? 0;
+        }
+
         // Layanan paling sering dipesan
-        $chartLayanan = Pemesan::selectRaw('layanan_id, COUNT(*) as total')
+        $chartLayanan = Pemesan::with('layanan_relasi')
+            ->selectRaw('layanan_id, COUNT(*) as total')
             ->groupBy('layanan_id')
             ->orderByDesc('total')
-            ->limit(5)
             ->get();
 
+        $labelsLayanan = $chartLayanan->map(fn($item) => $item->layanan_relasi->nama_layanan ?? 'Unknown');
+        $totalsLayanan = $chartLayanan->pluck('total');
+
+
         // Data Pemesan terbaru
-        $latestOrders = Pemesan::with('layanan')->latest()->take(5)->get();
+        $pemesanTerbaru = Pemesan::with('layanan_relasi')->latest()->first();
 
         return view('admin.dashboard', compact(
-            'todayOrders', 'todayIncome', 'totalCustomers', 'chartKeuntungan', 'chartLayanan', 'latestOrders'
+            'todayOrders',
+            'todayIncome',
+            'totalCustomers',
+            'chartKeuntungan',
+            'labelsLayanan',
+            'totalsLayanan',
+            'bulanArray',
+            'pendapatanArray',
+            'pemesanTerbaru'
         ));
     }
 }

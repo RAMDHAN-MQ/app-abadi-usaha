@@ -80,4 +80,31 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         return redirect('/');
     }
+
+    // flutter
+
+    public function loginHP(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $user = Users::where('name', $request->username)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Username atau password salah'
+            ], 401);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'id' => $user->id,
+            'username' => $user->name,
+            'phone' => $user->no_telp,
+            'job' => $user->job,
+        ]);
+    }
 }

@@ -31,10 +31,15 @@
                 <td>Pekerja</td>
                 <td>
                     @forelse($pekerja as $item)
-                    • {{ $item->pekerja_relasi->name }} - {{ $item->pekerja_relasi->job }}<br>
+                    • {{ $item->pekerja_relasi->name }} - {{ $item->pekerja_relasi->job }} -
+                    <span class="{{ $item->verifikasi == 'terima' ? 'badge bg-success' : ($item->verifikasi == 'tolak' ? 'badge bg-danger' : 'badge bg-secondary') }}">
+                        {{ $item->verifikasi ?? 'Belum diverifikasi' }}
+                    </span>
+                    <br>
                     @empty
                     <span class="badge bg-danger">Belum memilih petugas</span>
                     @endforelse
+
                 </td>
             </tr>
 

@@ -40,12 +40,15 @@
                 </td>
 
                 <td class="text-center">
-                    <form action="{{ route('admin.pemesanan.destroy', $item->id) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
+                    @if ($item->status != 'selesai')
                         <a href="{{ route('admin.pemesanan.edit', $item->id) }}" class="btn btn-warning btn-sm">
                             <i class="bi bi-pencil"></i>
                         </a>
+                    @endif
+
+                    <form action="{{ route('admin.pemesanan.destroy', $item->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
                         <button type="button" class="btn btn-danger btn-sm btn-delete">
                             <i class="bi bi-trash"></i>
                         </button>

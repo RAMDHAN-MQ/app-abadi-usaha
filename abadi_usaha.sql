@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v12.4.3 (64 bit)
-MySQL - 10.4.32-MariaDB-log : Database - abadi_usaha
+MySQL - 10.4.32-MariaDB : Database - abadi_usaha
 *********************************************************************
 */
 
@@ -50,12 +50,17 @@ CREATE TABLE `detail_pemesanan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pemesanan_id` int(11) DEFAULT NULL,
   `pekerja_id` int(11) DEFAULT NULL,
-  `verivikasi` varchar(15) DEFAULT NULL,
+  `verifikasi` varchar(15) DEFAULT NULL,
   `alasan` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `detail_pemesanan` */
+
+insert  into `detail_pemesanan`(`id`,`pemesanan_id`,`pekerja_id`,`verifikasi`,`alasan`) values 
+(2,9,3,NULL,NULL),
+(3,9,9,NULL,NULL),
+(4,9,10,NULL,NULL);
 
 /*Table structure for table `failed_jobs` */
 
@@ -92,9 +97,6 @@ CREATE TABLE `gaji` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `gaji` */
-
-insert  into `gaji`(`id`,`user_id`,`pemesanan_id`,`pendapatan`,`gaji_karyawan`,`status`,`update_at`,`created_at`) values 
-(1,3,7,1000000,50000,'Belum Dibayar',NULL,NULL);
 
 /*Table structure for table `job_batches` */
 
@@ -152,10 +154,8 @@ CREATE TABLE `layanan` (
 /*Data for the table `layanan` */
 
 insert  into `layanan`(`id`,`nama_layanan`,`harga`,`keterangan`,`icon`,`updated_at`,`created_at`) values 
-(2,'Pelancaran',6000000,'qoweioqwieoqwie',NULL,NULL,NULL),
-(4,'asdasd',123123,'asdasd','1759830338_person-4096070_1280.jpg','2025-10-07 09:45:38','2025-10-07 09:45:38'),
-(5,'aaaaaa',5555,'sdfqqqqqqqqqqq','1759830405_Screenshot (209).png','2025-10-13 01:23:58','2025-10-07 09:46:45'),
-(8,'Sedot WC',700000,'sedot mas','1760331760_audit.png','2025-10-13 05:02:40','2025-10-13 05:02:40');
+(2,'Pelancaran',550000,'Kami menyediakan layanan sedot WC cepat, bersih, dan profesional untuk rumah tangga, kantor, restoran, maupun gedung komersial. Tim kami menggunakan peralatan modern dan aman, memastikan penyedotan dilakukan secara tuntas tanpa menimbulkan bau atau kerusakan pada saluran pembuangan. Layanan ini juga mencakup pemeriksaan tangki septik serta perawatan berkala untuk mencegah masalah di kemudian hari.',NULL,'2025-10-20 06:25:33',NULL),
+(8,'Sedot WC',700000,'Kami melayani pelancaran saluran air, wastafel, kamar mandi, dan pembuangan yang tersumbat menggunakan alat bertekanan tinggi. Dikerjakan oleh tenaga ahli berpengalaman, proses dilakukan dengan cepat dan tanpa merusak instalasi pipa. Cocok untuk Anda yang mengalami masalah saluran mampet di rumah, kantor, atau tempat usaha dengan hasil yang bersih dan tahan lama.','1760331760_audit.png','2025-10-20 06:25:41','2025-10-13 05:02:40');
 
 /*Table structure for table `migrations` */
 
@@ -166,14 +166,15 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `migrations` */
 
 insert  into `migrations`(`id`,`migration`,`batch`) values 
 (1,'0001_01_01_000000_create_users_table',1),
 (2,'0001_01_01_000001_create_cache_table',1),
-(3,'0001_01_01_000002_create_jobs_table',1);
+(3,'0001_01_01_000002_create_jobs_table',1),
+(4,'2025_10_20_153845_create_personal_access_tokens_table',2);
 
 /*Table structure for table `password_reset_tokens` */
 
@@ -197,23 +198,47 @@ CREATE TABLE `pemesanan` (
   `user_id` int(11) DEFAULT NULL,
   `nama_pemesan` varchar(255) DEFAULT NULL,
   `layanan_id` int(11) DEFAULT NULL,
-  `no_telp` bigint(20) DEFAULT NULL,
+  `no_telp` varchar(20) DEFAULT NULL,
   `alamat` text DEFAULT NULL,
   `detail_alamat` text DEFAULT NULL,
-  `status` varchar(10) DEFAULT NULL,
-  `harga` bigint(20) DEFAULT NULL,
-  `ongkir` bigint(20) DEFAULT NULL,
+  `status` varchar(10) DEFAULT 'pending',
+  `harga` bigint(20) DEFAULT 0,
+  `ongkir` bigint(20) DEFAULT 0,
+  `testimoni_id` int(11) NOT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `pemesanan` */
 
-insert  into `pemesanan`(`id`,`user_id`,`nama_pemesan`,`layanan_id`,`no_telp`,`alamat`,`detail_alamat`,`status`,`harga`,`ongkir`,`updated_at`,`created_at`) values 
-(7,NULL,'abel',2,8646789,'kediri',NULL,'pending',10000,NULL,'2025-10-13 05:59:31','2025-10-13 05:59:31'),
-(8,7,'Reprehenderit omnis',2,81203801,'Politeknik Negeri Malang Kediri',NULL,NULL,NULL,NULL,'2025-10-13 07:46:09','2025-10-13 07:46:09'),
-(9,7,'faiz',8,8123456,'Kota, Kediri City, East Java, Java, 64124, Indonesia',NULL,NULL,NULL,NULL,'2025-10-13 07:47:10','2025-10-13 07:47:10');
+insert  into `pemesanan`(`id`,`user_id`,`nama_pemesan`,`layanan_id`,`no_telp`,`alamat`,`detail_alamat`,`status`,`harga`,`ongkir`,`testimoni_id`,`updated_at`,`created_at`) values 
+(7,NULL,'abel',2,'08646789','kediri',NULL,'pending',10000,0,0,'2025-10-13 05:59:31','2025-10-13 05:59:31'),
+(8,7,'Reprehenderit omnis',2,'081203801','Politeknik Negeri Malang Kediri',NULL,'selesai',550000,0,0,'2025-10-20 17:39:30','2025-10-13 07:46:09'),
+(9,7,'faiz',8,'08123456','Kota, Kediri City, East Java, Java, 64124, Indonesia',NULL,'proses',700000,0,0,'2025-10-20 17:07:13','2025-10-13 07:47:10');
+
+/*Table structure for table `personal_access_tokens` */
+
+DROP TABLE IF EXISTS `personal_access_tokens`;
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) unsigned NOT NULL,
+  `name` text NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`),
+  KEY `personal_access_tokens_expires_at_index` (`expires_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `personal_access_tokens` */
 
 /*Table structure for table `sessions` */
 
@@ -234,9 +259,7 @@ CREATE TABLE `sessions` (
 /*Data for the table `sessions` */
 
 insert  into `sessions`(`id`,`user_id`,`ip_address`,`user_agent`,`payload`,`last_activity`) values 
-('5s34duIX6KkLgWbxbFd9E0RDoR9nTDLQIdozLuN1',NULL,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiVjdwM2I2Z1dXSlhQcUlPd3I3TUVRQjJOaVB1TjN6RVU5alJIMWs1YSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9yZWdpc3RyYXNpIjt9czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czo0NDoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL3BlbWVzYW4vZm9ybS1wZW1lc2FuYW4iO319',1760343570),
-('bwP2KJcO23n32PkcZGxhpPpOqLHBRVn2MX2KiYMW',8,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoiYTFTbUNhZjJNV0VRdEFoYkhnUUYwd3dtTjVvZ21JMGtjQmtHMEozOCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9hZG1pbi9wZW1lc2FuYW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjM6InVybCI7YTowOnt9czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6ODt9',1760346436),
-('txHNHUibPvSErmLcaRBPpzvEuSo2Oj1o5fwK96nz',8,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoiV2V0RzRtVW9JeFJPd0lteVJiVmFBM1poODRaemh5SVRwNTVETVBxRyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9wZW1lc2FuL2Zvcm0tcGVtZXNhbmFuIjt9czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjg7fQ==',1760346842);
+('Mk0achw9NJj3osDA9NTrPgcuClJqTPyWZOdFXIdR',8,'192.168.1.65','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36','YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSjY0cW5mT0p1VmlpN0JEM3hxSFg0bGVBYmNVT29CMkIyVFcwMThUdSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDA6Imh0dHA6Ly8xOTIuMTY4LjEuNjU6ODAwMC9hZG1pbi9wZW1lc2FuYW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo4O30=',1760982670);
 
 /*Table structure for table `testimoni` */
 
@@ -268,8 +291,8 @@ CREATE TABLE `users` (
   `role` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `job` varchar(255) DEFAULT NULL,
-  `no_rekening` bigint(20) DEFAULT NULL,
-  `no_telp` bigint(20) DEFAULT NULL,
+  `no_rekening` varchar(20) DEFAULT NULL,
+  `no_telp` varchar(20) DEFAULT NULL,
   `alamat` text DEFAULT NULL,
   `gambar` varchar(255) DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
@@ -277,16 +300,17 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 
 insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`role`,`status`,`job`,`no_rekening`,`no_telp`,`alamat`,`gambar`,`remember_token`,`created_at`,`updated_at`) values 
-(3,'Pak Anam','anamjr@gmail.com',NULL,'$2y$12$7mQGUK0q93On8Yri3Wy8AuRskJJd9srjbHjZ1IJKPazku2uL/Gewu','petugas','Sedia','Petugas Biasa',987536788,NULL,NULL,'1760332125_icon_large.png',NULL,'2025-10-13 05:08:45','2025-10-13 08:57:14'),
-(7,'faiz','faiz@gmail.com',NULL,'$2y$12$57W7D41Jq8qcBQyG/fOuFOsC3fqhJt3CPrUaD/vSf5ftqmwzHU1pO','pemesan',NULL,NULL,NULL,8123456,'jl oke','foto_profil/sfIgRpZ5jpYJ8rtyawBrLMOazOJQvwlOHvjzYM5p.png',NULL,'2025-10-13 05:23:08','2025-10-13 08:01:57'),
-(8,'admin','admin@gmail.com',NULL,'$2y$12$8P/w6JjWG0OEkJ3gilp2H.Ql9e8Y0Hi5fQNODQ0Ozum53mqxcGVhK','admin',NULL,NULL,NULL,81332795308,NULL,NULL,NULL,'2025-10-13 05:32:17','2025-10-13 05:32:17'),
-(9,'Pak Chandra','chandra@gmail.com',NULL,'$2y$12$0W7eItgyZJhOheHXAHpZiO18vTbjiOH3vQLt98rT2Z2PgaNshSYZ2','petugas','Sedia','Supir',81723812793,NULL,NULL,'1760345889_video.png',NULL,'2025-10-13 08:58:09','2025-10-13 08:59:05'),
-(10,'Pak Agus','agus@gmail.com',NULL,'$2y$12$wdnIDWPMd4t86gGB6NZ1p.8lc8Ze0/Vo3meGWz3r6GKUqI3bNGvd2','petugas','Sedia','Supir',273487239,NULL,NULL,'1760345936_loading.png',NULL,'2025-10-13 08:58:56','2025-10-13 08:59:11');
+(3,'Pak Anam','anamjr@gmail.com',NULL,'$2y$12$P9MO9mcSJyBgCK8Ee2nkkeXFG7qNN7ilD6UjhVBtYBaburuLgenKa','petugas','Sedia','Petugas Biasa','987536788','081238',NULL,'1760936474_macan 2.png',NULL,'2025-10-13 05:08:45','2025-10-20 15:01:22'),
+(7,'faiz','faiz@gmail.com',NULL,'$2y$12$57W7D41Jq8qcBQyG/fOuFOsC3fqhJt3CPrUaD/vSf5ftqmwzHU1pO','pemesan',NULL,NULL,NULL,'08123456','jl oke','foto_profil/1Az41Aw1WZfzhB7U2f6GxHkSkIhTAwR0TuXK9cp8.jpg',NULL,'2025-10-13 05:23:08','2025-10-15 14:31:44'),
+(8,'admin','admin@gmail.com',NULL,'$2y$12$8P/w6JjWG0OEkJ3gilp2H.Ql9e8Y0Hi5fQNODQ0Ozum53mqxcGVhK','admin',NULL,NULL,NULL,'081332795308',NULL,NULL,NULL,'2025-10-13 05:32:17','2025-10-13 05:32:17'),
+(9,'Pak Chandra','chandra@gmail.com',NULL,'$2y$12$0W7eItgyZJhOheHXAHpZiO18vTbjiOH3vQLt98rT2Z2PgaNshSYZ2','petugas','Sedia','Supir','81723812793','0182031',NULL,'1760345889_video.png',NULL,'2025-10-13 08:58:09','2025-10-13 08:59:05'),
+(10,'Pak Agus','agus@gmail.com',NULL,'$2y$12$wdnIDWPMd4t86gGB6NZ1p.8lc8Ze0/Vo3meGWz3r6GKUqI3bNGvd2','petugas','Sedia','Supir','273487239','08123123',NULL,'1760345936_loading.png',NULL,'2025-10-13 08:58:56','2025-10-13 08:59:11'),
+(11,'abellya','abel@gmail.com',NULL,'$2y$12$/0F7D16KO8fS83LZKUSoRepBEQkZA2C3ZkRDg86x19idL9PC.TFd.','pemesan',NULL,NULL,NULL,'097653678',NULL,NULL,NULL,'2025-10-20 04:49:50','2025-10-20 04:49:50');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

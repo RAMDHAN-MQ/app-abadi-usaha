@@ -7,6 +7,7 @@ use App\Models\Pemesan;
 use App\Models\PemesananDetail;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PemesanAdminController extends Controller
@@ -97,9 +98,54 @@ class PemesanAdminController extends Controller
         $pemesan->layanan_id = $request->layanan;
         $pemesan->no_telp = $request->nomor_hp;
         $pemesan->alamat = $request->alamat;
+        $pemesan->harga = $request->harga;
 
         $pemesan->save();
 
         return redirect()->route('admin.pemesanan')->with('success', 'Data layanan berhasil diperbarui.');
+    }
+
+    //  flutter
+
+    public function ambilPesanan($pekerjaId)
+    {
+        $pesanan = DB::table('pemesanan as p')
+            ->join('detail_pemesanan as d', 'p.id', '=', 'd.pemesanan_id')
+            ->join('layanan as l', 'p.layanan_id', '=', 'l.id')
+            ->select(
+                'p.id as pesanan_id',
+                'p.no_telp',
+                'p.alamat',
+                'l.nama_layanan',
+                'd.id as detail_id',
+                'd.verifikasi',
+                'd.alasan'
+            )
+            ->where('d.pekerja_id', $pekerjaId)
+            ->whereNull('d.verifikasi') // hanya yang belum diverifikasi
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $pesanan
+        ]);
+    }
+
+    public function updateVerifikasi(Request $request, $detailId)
+    {
+        $request->validate([
+            'verifikasi' => 'required|in:terima,tolak',
+        ]);
+
+        DB::table('detail_pemesanan')
+            ->where('id', $detailId)
+            ->update([
+                'verifikasi' => $request->verifikasi
+            ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Verifikasi berhasil diupdate'
+        ]);
     }
 }
