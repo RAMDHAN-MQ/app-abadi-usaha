@@ -28,4 +28,9 @@ class Users extends Model
     {
         return $this->hasMany(Gaji::class, 'user_id');
     }
+
+    public function detail_relasi()
+    {
+        return $this->hasMany(PemesananDetail::class, 'pekerja_id');
+    }
 }

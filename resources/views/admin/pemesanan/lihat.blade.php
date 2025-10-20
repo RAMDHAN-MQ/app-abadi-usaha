@@ -10,7 +10,7 @@
                 <td style="width: 200px;">Nama Pemesan</td>
                 <td>{{ $pemesanan->nama_pemesan }}</td>
             </tr>
-            
+
             <tr>
                 <td>Alamat</td>
                 <td>{{ $pemesanan->alamat }}</td>
@@ -27,6 +27,17 @@
                 <td>Harga</td>
                 <td>Rp{{ number_format($pemesanan->harga, 0, ',', '.') }}</td>
             </tr>
+            <tr>
+                <td>Pekerja</td>
+                <td>
+                    @forelse($pekerja as $item)
+                    • {{ $item->pekerja_relasi->name }} - {{ $item->pekerja_relasi->job }}<br>
+                    @empty
+                    <span class="badge bg-danger">Belum memilih petugas</span>
+                    @endforelse
+                </td>
+            </tr>
+
         </table>
         <a href="{{ route('admin.pemesanan') }}" class="btn btn-kembali">Kembali</a>
     </div>

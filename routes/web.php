@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/pemesanan', 'index')->name('admin.pemesanan');
         Route::get('/admin/pemesanan/create', 'create')->name('admin.pemesanan.create');
         Route::post('/admin/pemesanan/store', 'store')->name('admin.pemesanan.store');
+        Route::post('/admin/pemesanan/store/petugas', 'storePetugas')->name('admin.pemesanan.kirimPetugas');
         Route::get('/admin/pemesanan/show/{id}', 'show')->name('admin.pemesanan.show');
         Route::get('/admin/pemesanan/edit/{id}', 'edit')->name('admin.pemesanan.edit');
         Route::put('/admin/pemesanan/update/{id}', 'update')->name('admin.pemesanan.update');

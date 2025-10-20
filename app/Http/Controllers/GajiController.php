@@ -52,4 +52,12 @@ class GajiController extends Controller
         $gaji = Gaji::findOrFail($id);
         return view('admin.gaji.lihat', compact('gaji'));
     }
+
+    public function destroy($id)
+    {
+        $petugas = Gaji::findOrFail($id);
+        $petugas->delete();
+
+        return redirect()->route('admin.gaji')->with('success', 'Data Berhasil Dihapus');
+    }
 }

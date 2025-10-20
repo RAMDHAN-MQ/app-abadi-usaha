@@ -25,16 +25,47 @@
         </div>
 
         <div class="mb-3">
-            <label for="jenis_layanan" class="form-label">Jenis Layanan <span class="text-danger">*</span></label>
-            <select name="" id=""></select>
+            <label for="jenis_layanan" class="form-label">
+                Jenis Layanan <span class="text-danger">*</span>
+            </label>
+            <select name="layanan" id="layanan" class="form-select">
+                @foreach($layanan as $item)
+                <option value="{{ $item->id }}"
+                    data-harga="{{ $item->harga }}"
+                    {{ $pemesanan->layanan_id == $item->id ? 'selected' : '' }}>
+                    {{ $item->nama_layanan }}
+                </option>
+                @endforeach
+            </select>
         </div>
+
         <div class="mb-3">
             <label for="harga" class="form-label">Harga <span class="text-danger">*</span></label>
-            <input id="harga" name="harga" class="form-control" value="{{ old('harga', $pemesanan->harga) }}" required>
+            <input id="harga" name="harga" class="form-control" value="{{ old('harga', $pemesanan->harga) }}" readonly>
         </div>
 
         <button type="submit" class="btn btn-tambah">Simpan Perubahan</button>
         <a href="{{ route('admin.pemesanan') }}" class="btn btn-kembali">Kembali</a>
     </form>
 </div>
+@endsection
+
+@section('script')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const selectLayanan = document.getElementById('layanan');
+    const inputHarga = document.getElementById('harga');
+
+    selectLayanan.addEventListener('change', function() {
+        const selectedOption = selectLayanan.options[selectLayanan.selectedIndex];
+        const harga = selectedOption.getAttribute('data-harga');
+        inputHarga.value = harga || '';
+    });
+
+    const selectedOption = selectLayanan.options[selectLayanan.selectedIndex];
+    if (selectedOption) {
+        inputHarga.value = selectedOption.getAttribute('data-harga') || '';
+    }
+});
+</script>
 @endsection

@@ -27,10 +27,6 @@
                 <td>{{ $petugas->email }}</td>
             </tr>
             <tr>
-                <td>Password</td>
-                <td>{{ $petugas->password }}</td>
-            </tr>
-            <tr>
                 <td>Gambar</td>
                 <td><img src="{{ asset('storage/gambar_users/' . $petugas->gambar) }}" alt="Gambar" width="50%"></td>
             </tr>

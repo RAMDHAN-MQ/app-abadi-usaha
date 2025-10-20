@@ -28,6 +28,12 @@
             color: #fff;
             padding-top: 20px;
             font-weight: 600;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            height: 100vh;
+            overflow-y: auto;
         }
 
         .sidebar a {
@@ -58,6 +64,10 @@
             flex: 1;
             padding: 20px;
             background: #f5f6fa;
+            margin-left: 250px;
+            padding: 20px;
+            background: #f5f6fa;
+            flex: 1;
         }
 
         .btn-tambah {
@@ -82,6 +92,13 @@
 
         th {
             text-align: center;
+        }
+        
+        .text-ellipsis {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     </style>
 </head>

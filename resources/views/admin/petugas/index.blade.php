@@ -27,10 +27,16 @@
         <tr>
             <td class="text-center">{{ $loop->iteration }}</td>
             <td class="text-start">{{ $item->name }}</td>
-            <td class="text-center">{{ $item->status }}</td>
+            <td class="text-center">
+                    @if ($item->status == 'Sedia')
+                        <span class="badge bg-success">{{ $item->status }}</span>
+                    @else
+                        <span class="badge bg-danger">{{ $item->status }}</span>
+                    @endif
+                </td>
             <td class="text-end">{{ $item->job }}</td>
             <td class="text-end">{{ $item->no_rekening }}</td>
-            <td class="text-end">
+            <td class="text-center">
                 <form action="{{ route('admin.petugas.delete', $item->id) }}" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')

@@ -28,4 +28,10 @@ class Pemesan extends Model
     {
         return $this->belongsTo(Layanan::class, 'layanan_id');
     }
+
+    public function detail_relasi()
+    {
+        return $this->hasMany(PemesananDetail::class, 'pemesanan_id');
+    }
+
 }

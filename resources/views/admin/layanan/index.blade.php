@@ -26,7 +26,7 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->nama_layanan }}</td>
-                <td>{{ $item->keterangan }}</td>
+                <td class="text-ellipsis">{{ $item->keterangan }}</td>
                 <td class="text-end">Rp{{ number_format($item->harga, 0, ',', '.') }}</td>
                 <td class="text-center">
                     <form action="{{ route('admin.layanan.destroy', $item->id) }}" method="POST">

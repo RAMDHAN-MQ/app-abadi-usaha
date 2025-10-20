@@ -5,8 +5,7 @@
 @section('content')
 <div class="container mt-5 d-flex justify-content-center">
     <div class="card shadow-sm p-4 w-75" style="border-radius: 15px; background-color: #f9f9fc;">
-        <h4 class="text-center mb-4 fw-bold text-uppercase" style="color: #3C3B8B;">Edit Data Petugas</h4>
-        
+
         <form action="{{ route('admin.petugas.update', $petugas->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -59,20 +58,19 @@
                     <label for="gambar" class="form-label fw-semibold">Gambar</label>
                     <input type="file" id="gambar" name="gambar" class="form-control" accept="image/*">
                     @if($petugas->gambar)
-                        <small class="text-muted d-block mt-1">Gambar saat ini: {{ $petugas->gambar }}</small>
-                        <img src="{{ asset('storage/gambar_users/' . $petugas->gambar) }}" 
-                             alt="Gambar Petugas" 
-                             width="100" 
-                             class="mt-2 rounded shadow-sm border">
+                    <small class="text-muted d-block mt-1">Gambar saat ini: {{ $petugas->gambar }}</small>
+                    <img src="{{ asset('storage/gambar_users/' . $petugas->gambar) }}"
+                        alt="Gambar Petugas"
+                        width="100"
+                        class="mt-2 rounded shadow-sm border">
                     @endif
                 </div>
             </div>
 
             <div class="text-center mt-4">
-                <button type="submit" class="btn fw-bold text-white px-5 py-2 rounded-pill" 
-                    style="background-color: #3C3B8B;">Simpan</button>
-                <a href="{{ route('admin.petugas') }}" 
-                    class="btn btn-secondary fw-bold px-4 py-2 rounded-pill ms-2">Kembali</a>
+                <button type="submit" class="btn btn-tambah">Simpan</button>
+                <a href="{{ route('admin.petugas') }}"
+                    class="btn btn-secondary">Kembali</a>
             </div>
         </form>
     </div>
