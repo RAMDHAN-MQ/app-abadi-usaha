@@ -40,12 +40,15 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _isLoading = true);
 
     try {
-      final url = Uri.parse("http://10.98.10.141/abadi_usaha/login.php");
+      final url = Uri.parse("http://192.168.1.65:8000/api/loginHP");
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"username": username, "password": password}),
       );
+
+      print("STATUS CODE: ${response.statusCode}");
+      print("RESPONSE BODY:\n${response.body}");
 
       final data = jsonDecode(response.body);
 
@@ -70,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                 username: data["username"],
                 phone: data["phone"],
                 job: data["job"],
+                pekerjaId: data["id"],
               ),
             ),
           );
@@ -90,6 +94,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } catch (e) {
+      print("❌ ERROR SAAT KONEKSI: $e");
       showDialog(
         context: context,
         builder: (_) => const AlertDialog(

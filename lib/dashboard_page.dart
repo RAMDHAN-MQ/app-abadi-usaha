@@ -8,12 +8,14 @@ class DashboardPage extends StatefulWidget {
   final String username;
   final String phone;
   final String job;
+  final int pekerjaId;
 
   const DashboardPage({
     super.key,
     required this.username,
     required this.phone,
     required this.job,
+    required this.pekerjaId,
   });
 
   @override
@@ -28,7 +30,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     _pages = [
-      HomePage(username: widget.username),
+      HomePage(pekerjaId: widget.pekerjaId),
       RiwayatPage(username: widget.username),
       PendapatanPage(username: widget.username), // menu baru di sini
       ProfilPage(
