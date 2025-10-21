@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pemesan/form-pemesanan/store', [PemesanController::class, 'store'])->name('pemesan.form.store');
     Route::put('/pemesan/profil/update', [PemesanController::class, 'updateProfil'])->name('pemesan.updateProfil');
     
+    Route::get('/pemesan/riwayat', [PemesanController::class, 'riwayat'])->name('pemesan.riwayat');
     // admin
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/admin/dashboard', 'index')->name('admin.dashboard');

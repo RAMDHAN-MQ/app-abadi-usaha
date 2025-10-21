@@ -117,6 +117,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                         <li><a class="dropdown-item" href="{{ route('pemesan.profil') }}">Profil Saya</a></li>
+                        <li><a class="dropdown-item" href="{{ route('pemesan.riwayat') }}">Riwayat</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">

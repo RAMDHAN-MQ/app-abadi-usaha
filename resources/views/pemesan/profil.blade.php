@@ -3,6 +3,13 @@
 @section('title', 'Profil Pengguna')
 
 @section('content')
+
+<style>
+    body {
+        background-color: #313473;
+    }
+</style>
+
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -12,7 +19,7 @@
 
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body text-center">
-                    <h4 class="fw-bold mb-3 text-primary">Profil Pengguna</h4>
+                    <h4 class="fw-bold mb-3" style="color: #313473;">Profil Pengguna</h4>
                     <div class="mb-3">
                         @if($user->gambar)
                             <img src="{{ asset('storage/' . $user->gambar) }}" class="rounded-circle shadow" width="120" height="120" alt="Foto Profil" style="object-fit: cover; aspect-ratio: 1/1;">
@@ -57,7 +64,7 @@
                         </div>
 
                         <div class="d-grid mt-3">
-                            <button type="submit" class="btn btn-primary rounded-pill py-2">Simpan Perubahan</button>
+                            <button type="submit" class="btn rounded-pill py-2 text-white" style="background-color: #313473;">Simpan Perubahan</button>
                         </div>
                     </form>
 

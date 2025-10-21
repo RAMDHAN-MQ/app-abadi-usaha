@@ -54,7 +54,6 @@ class PemesanController extends Controller
 
             Storage::disk('public')->put($imageName, base64_decode($image));
             $user->gambar = $imageName;
-
         } elseif ($request->hasFile('gambar')) {
             // Jika user upload tanpa crop
             $path = $request->file('gambar')->store('foto_profil', 'public');
@@ -89,4 +88,27 @@ class PemesanController extends Controller
 
         return redirect()->route('pemesan.beranda')->with('success', 'Berhasil Memesan');
     }
+
+    public function riwayat()
+{
+    $userId = Auth::id();
+
+    $pesananPending = Pemesan::with('layanan_relasi')
+        ->where('user_id', $userId)
+        ->where('status', 'pending')
+        ->get();
+
+    $pesananProses = Pemesan::with('layanan_relasi')
+        ->where('user_id', $userId)
+        ->where('status', 'proses')
+        ->get();
+
+    $pesananSelesai = Pemesan::with('layanan_relasi')
+        ->where('user_id', $userId)
+        ->where('status', 'selesai')
+        ->get();
+
+    return view('pemesan.riwayat', compact('pesananPending', 'pesananProses', 'pesananSelesai'));
+}
+
 }
