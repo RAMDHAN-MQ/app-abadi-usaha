@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/gaji/show/{id}', 'show')->name('admin.gaji.show');
         Route::get('/admin/gaji/edit/{id}', 'edit')->name('admin.gaji.edit');
         Route::put('/admin/gaji/update/{id}', 'update')->name('admin.gaji.update');
+        Route::put('/admin/gaji/update-gaji/{id}', 'updateGaji')->name('admin.gaji.updateGaji');
         Route::delete('/admin/gaji/delete/{id}', 'destroy')->name('admin.gaji.destroy');
     });
 });

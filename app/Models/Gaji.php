@@ -16,6 +16,8 @@ class Gaji extends Model
         'pemesanan_id',
         'pendapatan',
         'gaji_karyawan',
+        'gaji_admin',
+        'status',
         'updated_at',
         'created_at',
     ];
@@ -23,5 +25,10 @@ class Gaji extends Model
     public function pekerja_relasi()
     {
         return $this->belongsTo(Users::class, 'user_id');
+    }
+
+    public function pemesanan_relasi()
+    {
+        return $this->belongsTo(Pemesan::class, 'pemesanan_id');
     }
 }

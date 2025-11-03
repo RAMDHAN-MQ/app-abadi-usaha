@@ -34,4 +34,9 @@ class Pemesan extends Model
         return $this->hasMany(PemesananDetail::class, 'pemesanan_id');
     }
 
+    public function gaji_relasi()
+    {
+        return $this->hasMany(Gaji::class, 'pemesanan_id');
+    }
+
 }

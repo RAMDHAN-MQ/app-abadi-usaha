@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Layanan;
+use App\Models\Gaji;
 use App\Models\Pemesan;
 use App\Models\PemesananDetail;
 use App\Models\Users;
@@ -122,7 +123,7 @@ class PemesanAdminController extends Controller
                 'd.alasan'
             )
             ->where('d.pekerja_id', $pekerjaId)
-            ->whereNull('d.verifikasi') // hanya yang belum diverifikasi
+            ->whereNull('d.verifikasi')
             ->get();
 
         return response()->json([
@@ -137,15 +138,94 @@ class PemesanAdminController extends Controller
             'verifikasi' => 'required|in:terima,tolak',
         ]);
 
+        // Update kolom verifikasi di detail_pemesanan
         DB::table('detail_pemesanan')
             ->where('id', $detailId)
             ->update([
                 'verifikasi' => $request->verifikasi
             ]);
 
+        // Ambil id pemesanan yang terkait dengan detail ini
+        $idpemesanan = DB::table('detail_pemesanan')
+            ->where('id', $detailId)
+            ->value('pemesanan_id'); // gunakan value() untuk ambil 1 kolom
+
+        // Update status pemesanan menjadi "proses"
+        if ($idpemesanan) {
+            DB::table('pemesanan')
+                ->where('id', $idpemesanan)
+                ->update(['status' => 'proses']);
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Verifikasi berhasil diupdate'
+        ]);
+    }
+
+
+    // riwayat
+
+    public function getPesananByPekerja($pekerja_id)
+    {
+        $data = PemesananDetail::with(['detail_pemesanan_relasi.layanan_relasi'])
+            ->where('pekerja_id', $pekerja_id)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'status' => $item->detail_pemesanan_relasi->status,
+                    'nama_layanan' => $item->detail_pemesanan_relasi->layanan_relasi->nama_layanan ?? '-',
+                    'no_telp' => $item->detail_pemesanan_relasi->no_telp,
+                    'alamat' => $item->detail_pemesanan_relasi->alamat,
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
+    public function updateStatus($id, Request $request)
+    {
+        $detail = PemesananDetail::find($id);
+
+        if (!$detail) {
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
+
+        // Ambil relasi ke tabel pemesanan
+        $pemesanan = $detail->detail_pemesanan_relasi;
+
+        if (!$pemesanan) {
+            return response()->json(['message' => 'Data pemesanan tidak ditemukan'], 404);
+        }
+
+        // Ubah status pemesanan
+        $pemesanan->status = $request->status ?? 'selesai';
+        $pemesanan->save();
+
+        // Jika statusnya selesai → tambahkan ke tabel gaji
+        if ($pemesanan->status === 'selesai') {
+            $pendapatan = $pemesanan->harga ?? 0; // ambil dari kolom harga pemesanan
+            $gaji_karyawan = $pendapatan * 0.7;   // contoh bagi hasil 70%
+            $gaji_admin = $pendapatan * 0.3;      // contoh bagi hasil 30%
+
+            Gaji::create([
+                'user_id' => $detail->pekerja_id,
+                'pemesanan_id' => $pemesanan->id,
+                'pendapatan' => $pendapatan,
+                'gaji_karyawan' => $gaji_karyawan,
+                'gaji_admin' => $gaji_admin,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status berhasil diperbarui dan data gaji ditambahkan',
         ]);
     }
 }

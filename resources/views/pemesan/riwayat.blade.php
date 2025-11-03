@@ -64,7 +64,7 @@
                             @forelse($pesananProses as $pesanan)
                                 <div class="card mb-3 shadow-sm">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ $pesanan->layanan->nama_layanan ?? 'Layanan Tidak Diketahui' }}</h5>
+                                        <h5 class="card-title">{{ $pesanan->layanan_relasi->nama_layanan ?? 'Layanan Tidak Diketahui' }}</h5>
                                         <p class="mb-1"><strong>Alamat:</strong> {{ $pesanan->alamat }}</p>
                                         <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->harga, 0, ',', '.') }}</p>
                                         <p class="mb-0"><span class="badge bg-primary">Proses</span></p>
@@ -80,7 +80,7 @@
                             @forelse($pesananSelesai as $pesanan)
                                 <div class="card mb-3 shadow-sm">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ $pesanan->layanan->nama_layanan ?? 'Layanan Tidak Diketahui' }}</h5>
+                                        <h5 class="card-title">{{ $pesanan->layanan_relasi->nama_layanan ?? 'Layanan Tidak Diketahui' }}</h5>
                                         <p class="mb-1"><strong>Alamat:</strong> {{ $pesanan->alamat }}</p>
                                         <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->harga, 0, ',', '.') }}</p>
                                         <p class="mb-0"><span class="badge bg-success">Selesai</span></p>

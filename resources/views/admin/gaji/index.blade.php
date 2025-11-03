@@ -17,7 +17,7 @@
                 <th>No.</th>
                 <th>Nama Petugas</th>
                 <th>Status Gaji</th>
-                <th>Pemesanan</th>
+                <th>Gaji</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -26,10 +26,16 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->pekerja_relasi->name }}</td>
-                <td>{{ $item->status }}</td>
-                <td class="text-end">Rp{{ number_format($item->pendapatan, 0, ',', '.') }}</td>
+                <td>
+                    @if( $item->status == 'Belum Lunas' )
+                        <span class="badge bg-danger">{{ $item->status }}</span>
+                    @else
+                        <span class="badge bg-success">{{ $item->status }}</span>
+                    @endif
+                </td>
+                <td class="text-end">Rp{{ number_format($item->gaji_karyawan, 0, ',', '.') }}</td>
                 <td class="text-center">
-                    <form action="{{ route('admin.gaji.destroy', $item->id) }}" method="POST">
+                    <form action="{{ route('admin.gaji.destroy', $item->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn btn-warning btn-sm btn-detail" data-bs-toggle="modal" data-bs-target="#gajiModal" data-nama="{{ $item->pekerja_relasi->name }}"
@@ -39,6 +45,13 @@
                         <button type="button" class="btn btn-danger btn-sm btn-delete"><i class="bi bi-trash"></i></button>
                         <a href="{{ route('admin.gaji.show', $item->id) }}" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></a>
                     </form>
+                    @if($item->status != 'Lunas')
+                        <form action="{{ route('admin.gaji.updateGaji', $item->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check"></i></button>
+                        </form>
+                    @endif
                 </td>
             </tr>
             @endforeach
