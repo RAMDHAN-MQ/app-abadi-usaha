@@ -47,8 +47,14 @@ class Pesanan {
 }
 
 class HomePage extends StatefulWidget {
-  final int pekerjaId; // ID pekerja yang login
-  const HomePage({super.key, required this.pekerjaId});
+  final int pekerjaId;
+  final String namaPegawai; // tambahkan parameter ini
+
+  const HomePage({
+    super.key,
+    required this.pekerjaId,
+    required this.namaPegawai,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -66,7 +72,8 @@ class _HomePageState extends State<HomePage> {
   // Ambil data pesanan dari API
   Future<List<Pesanan>> fetchPesanan() async {
     final url = Uri.parse(
-        'http://192.168.1.65:8000/api/pesanan/${widget.pekerjaId}');
+      'http://192.168.1.65:8000/api/pesanan/${widget.pekerjaId}',
+    );
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -81,7 +88,8 @@ class _HomePageState extends State<HomePage> {
   // Update status verifikasi (terima / tolak) dan refresh list
   Future<void> updateVerifikasi(int detailId, String status) async {
     final url = Uri.parse(
-        'http://192.168.1.65:8000/api/verifikasi_pemesanan/$detailId');
+      'http://192.168.1.65:8000/api/verifikasi_pemesanan/$detailId',
+    );
     final response = await http.put(
       url,
       headers: {"Content-Type": "application/json"},
@@ -105,12 +113,42 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF3F3D9B),
         elevation: 0,
-        title: const Text(
-          "Beranda",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Abadi Usaha",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              widget.namaPegawai, // ambil dari parameter widget
+              style: const TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+          ],
         ),
-        centerTitle: true,
+
+        // 🔔 Tambahkan icon di sisi kanan
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications_none, // bisa diganti jadi Icons.notifications
+              color: Colors.white,
+              size: 28,
+            ),
+            onPressed: () {
+              // Aksi ketika notifikasi ditekan
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Belum ada notifikasi baru')),
+              );
+            },
+          ),
+        ],
       ),
+
       body: FutureBuilder<List<Pesanan>>(
         future: pesananFuture,
         builder: (context, snapshot) {
@@ -119,7 +157,16 @@ class _HomePageState extends State<HomePage> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Belum ada pesanan', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),));
+            return const Center(
+              child: Text(
+                'Belum ada pesanan',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
           } else {
             final pesananList = snapshot.data!;
             return ListView.builder(
@@ -138,9 +185,13 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('No Telp: ${pesanan.noTelp}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16)),
+                        Text(
+                          'No Telp: ${pesanan.noTelp}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                         Text('Alamat: ${pesanan.alamat}'),
                         Text('Layanan: ${pesanan.layananNama}'),
                         const SizedBox(height: 12),
@@ -148,11 +199,16 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.check_circle,
-                                  color: Colors.green, size: 36),
+                              icon: const Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                                size: 36,
+                              ),
                               onPressed: () async {
                                 await updateVerifikasi(
-                                    pesanan.detail.id, 'terima');
+                                  pesanan.detail.id,
+                                  'terima',
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Pesanan diterima'),
@@ -162,11 +218,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                             const SizedBox(width: 20),
                             IconButton(
-                              icon: const Icon(Icons.close,
-                                  color: Colors.red, size: 36),
+                              icon: const Icon(
+                                Icons.close,
+                                color: Colors.red,
+                                size: 36,
+                              ),
                               onPressed: () async {
                                 await updateVerifikasi(
-                                    pesanan.detail.id, 'tolak');
+                                  pesanan.detail.id,
+                                  'tolak',
+                                );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Pesanan ditolak'),

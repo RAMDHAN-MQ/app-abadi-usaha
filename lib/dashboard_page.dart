@@ -30,9 +30,9 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     _pages = [
-      HomePage(pekerjaId: widget.pekerjaId),
-      RiwayatPage(username: widget.username),
-      PendapatanPage(username: widget.username), // menu baru di sini
+      HomePage(pekerjaId: widget.pekerjaId, namaPegawai: widget.username),
+      RiwayatPage(username: widget.username, pekerjaId: widget.pekerjaId),
+      PendapatanPage(username: widget.username, userId: widget.pekerjaId), // menu baru di sini
       ProfilPage(
         username: widget.username,
         phone: widget.phone,
@@ -67,7 +67,7 @@ class _DashboardPageState extends State<DashboardPage> {
             borderRadius: BorderRadius.circular(20),
             child: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-              backgroundColor: const Color(0xFF6EA4DA),
+              backgroundColor: const Color(0xFF3F3D9B),
               selectedItemColor: Colors.white,
               unselectedItemColor: Colors.white70,
               selectedLabelStyle:
