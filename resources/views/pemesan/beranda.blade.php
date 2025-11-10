@@ -72,6 +72,15 @@
             color: #FFD700;
             text-decoration: underline;
         }
+
+        .text-truncate-multiline {
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* ubah angka ini untuk jumlah baris yang ditampilkan */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
     </style>
 </head>
 
@@ -264,15 +273,31 @@
         <div class="container">
             <h2 class="fw-bold mb-5 text-primary-custom">Testimoni</h2>
             <div class="row g-4">
-                @for ($i = 1; $i <= 6; $i++)
-                    <div class="col-md-4">
-                    <div class="card shadow-sm p-4">
-                        <p class="fst-italic mb-3">"Pelayanan cepat, sopan, dan hasilnya memuaskan."</p>
-                        <h6 class="fw-bold mb-0">Pelanggan {{ $i }}</h6>
+                @forelse($testimoni as $item)
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card shadow-sm p-3 h-100">
+                            <div class="d-flex align-items-center text-start">
+                                <div class="me-3 flex-shrink-0">
+                                    <img src="{{ asset('storage/' . $item->user_relasi->gambar) }}"
+                                        alt="Foto {{ $item->testimoni_pemesanan_relasi->nama_pemesan ?? 'Anonim' }}"
+                                        class="rounded-circle"
+                                        style="width: 70px; height: 70px; object-fit: cover;">
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">{{ $item->testimoni_pemesanan_relasi->nama_pemesan ?? 'Anonim' }}</h6>
+                                    <p class="fst-italic mb-0 text-muted text-truncate-multiline">
+                                        "{{ $item->komentar }}"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                @empty
+                    <div class="col-12">
+                        <p class="text-muted">Belum ada testimoni.</p>
+                    </div>
+                @endforelse
             </div>
-            @endfor
-        </div>
         </div>
     </section>
 

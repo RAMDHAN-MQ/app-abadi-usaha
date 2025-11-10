@@ -111,7 +111,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="stat-card bg-green">
                 <div class="stat-title">Pendapatan Hari Ini</div>
-                <div class="stat-number">Rp.{{$todayIncome}}</div>
+                <div class="stat-number">Rp{{ number_format($todayIncome, 0, ',', '.') }}</div>
             </div>
         </div>
 
@@ -152,7 +152,7 @@
                             <span class="badge bg-secondary">{{ $pemesanTerbaru->status }}</span>
                             @endif
                         </td>
-                        <td class="text-end">Rp {{ number_format($pemesanTerbaru->harga + $pemesanTerbaru->ongkir, 0, ',', '.') }}</td>
+                        <td class="text-end">Rp{{ number_format($pemesanTerbaru->harga + $pemesanTerbaru->ongkir, 0, ',', '.') }}</td>
                     </tr>
                 </tbody>
             </table>

@@ -68,7 +68,7 @@
     <div class="form-container">
         <h2>Form Pemesanan</h2>
 
-        <form action="{{ route('pemesan.form.store') }}" method="POST">
+        <form action="{{ route('pemesan.form.store') }}" method="POST" id="form-pemesanan">
             @csrf
 
             <div class="mb-3">
@@ -107,7 +107,7 @@
             </div>
 
             <div class="d-flex justify-content-start gap-2">
-                <button type="submit" class="btn btn-primary px-4">Pesan</button>
+                <button type="button" class="btn btn-primary px-4" onclick="buatTransaksi()">Pesan</button>
                 <a href="{{ url('/') }}" class="btn btn-secondary px-4">Kembali</a>
             </div>
         </form>
@@ -116,6 +116,8 @@
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
 
     <script>
         const layananSelect = document.getElementById('layanan');
@@ -202,6 +204,61 @@
                 .catch(err => console.error(err));
         }
     </script>
-</body>
 
+    <script>
+        function buatTransaksi() {
+            const formData = new FormData(document.getElementById('form-pemesanan'));
+
+            fetch('{{ route('payment.create') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                const snapToken = data.snap_token;
+                const currentOrderId = data.order_id;
+
+                if (!snapToken) {
+                    alert("Gagal mendapatkan token pembayaran!");
+                    return;
+                }
+
+                window.snap.pay(snapToken, {
+                    onSuccess: function(result) {
+                        alert('Pembayaran berhasil!');
+                        window.location.href = '/';
+                    },
+                    onPending: function(result) {
+                        alert('Menunggu pembayaran...');
+                    },
+                    onError: function(result) {
+                        alert('Terjadi kesalahan pembayaran!');
+                    },
+                    onClose: function() {
+                        alert('Anda menutup popup pembayaran tanpa menyelesaikan transaksi.');
+
+                        fetch('/payment/cancel', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                order_id: currentOrderId
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => console.log('Pesanan dibatalkan:', data))
+                        .catch(err => console.error('Gagal membatalkan pesanan:', err));
+                    }
+                });
+            })
+            .catch(err => console.error('Error:', err));
+        }
+    </script>
+
+</body>
 </html>

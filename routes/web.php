@@ -5,18 +5,19 @@ use App\Http\Controllers\{
     PemesanController,
     LayananController,
     AuthController,
+    BerandaController,
     DashboardController,
     PekerjaController,
     PemesanAdminController,
-    GajiController
+    GajiController,
+    PaymentController
 };
 
 // =========================
 // HALAMAN UTAMA
 // =========================
-Route::get('/', function () {
-    return view('pemesan.beranda');
-});
+Route::get('/', [BerandaController::class, 'beranda'])->name('beranda');
+
 
 // =========================
 // AUTH
@@ -31,13 +32,15 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::middleware('auth')->group(function () {
     // pemesan
-    Route::get('/pemesan', [PemesanController::class, 'index'])->name('pemesan.beranda');
+    Route::get('/pemesan', [BerandaController::class, 'beranda'])->name('pemesan.beranda');
     Route::get('/pemesan/profil', [PemesanController::class, 'profil'])->name('pemesan.profil');
     Route::get('/pemesan/form-pemesanan', [PemesanController::class, 'form_pesan'])->name('pemesan.form.pemesanan');
     Route::post('/pemesan/form-pemesanan/store', [PemesanController::class, 'store'])->name('pemesan.form.store');
     Route::put('/pemesan/profil/update', [PemesanController::class, 'updateProfil'])->name('pemesan.updateProfil');
     
     Route::get('/pemesan/riwayat', [PemesanController::class, 'riwayat'])->name('pemesan.riwayat');
+    Route::delete('/pemesan/riwayat/delete/{id}', [PemesanController::class, 'batalPesanan'])->name('pemesan.riwayat.destroy');
+    Route::post('/pemesan/riwayat/testimoni/{id}', [PemesanController::class, 'setorUlasan'])->name('pemesan.riwayat.ulasan');
     // admin
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/admin/dashboard', 'index')->name('admin.dashboard');
@@ -85,3 +88,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/admin/gaji/delete/{id}', 'destroy')->name('admin.gaji.destroy');
     });
 });
+
+Route::post('/payment', [PaymentController::class, 'createTransaction'])->name('payment.create');
+Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
+Route::post('/payment/cancel', [PaymentController::class, 'cancelTransaction']);
+Route::post('/payment/pay-again', [PaymentController::class, 'payAgain'])->name('payment.payAgain');
+Route::post('/payment/update-status', [PaymentController::class, 'updateStatus'])->name('payment.updateStatus');

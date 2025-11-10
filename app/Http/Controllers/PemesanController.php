@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Layanan;
 use App\Models\Pemesan;
+use App\Models\Testimoni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -95,20 +96,45 @@ class PemesanController extends Controller
 
     $pesananPending = Pemesan::with('layanan_relasi')
         ->where('user_id', $userId)
-        ->where('status', 'pending')
+        ->whereIn('status', ['pending', 'belum bayar'])
+        ->orderBy('updated_at', 'desc')
         ->get();
 
     $pesananProses = Pemesan::with('layanan_relasi')
         ->where('user_id', $userId)
         ->where('status', 'proses')
+        ->orderBy('updated_at', 'desc')
         ->get();
 
     $pesananSelesai = Pemesan::with('layanan_relasi')
         ->where('user_id', $userId)
         ->where('status', 'selesai')
+        ->orderBy('updated_at', 'desc')
         ->get();
 
     return view('pemesan.riwayat', compact('pesananPending', 'pesananProses', 'pesananSelesai'));
 }
+
+    public function batalPesanan($id)
+    {
+        $pemesanan = Pemesan::findOrFail($id);
+        $pemesanan->delete();
+
+        return redirect()->route('pemesan.riwayat')->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function setorUlasan($id, Request $request)
+    {
+        $pemesanan = Pemesan::findOrFail($id);
+        Testimoni::create([
+            'user_id' => Auth::id(),
+            'pemesanan_id' => $pemesanan->id,
+            'komentar' => $request->komentar,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('pemesan.riwayat')->with('success', 'Berhasil memberi ulasan');
+    }
 
 }

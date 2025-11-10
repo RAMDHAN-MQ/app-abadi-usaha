@@ -33,4 +33,9 @@ class Users extends Model
     {
         return $this->hasMany(PemesananDetail::class, 'pekerja_id');
     }
+
+    public function testimoni_relasi()
+    {
+        return $this->hasMany(Testimoni::class, 'user_id');
+    }
 }
