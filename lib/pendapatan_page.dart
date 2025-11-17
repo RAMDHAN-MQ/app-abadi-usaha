@@ -18,9 +18,7 @@ class PendapatanPage extends StatefulWidget {
 
 class _PendapatanPageState extends State<PendapatanPage> {
   bool _loading = true;
-  double totalPendapatan = 0;
-  int jumlahPekerjaan = 0;
-  List<Map<String, dynamic>> transaksi = [];
+  List<Map<String, dynamic>> periodeGaji = [];
 
   @override
   void initState() {
@@ -31,16 +29,20 @@ class _PendapatanPageState extends State<PendapatanPage> {
   Future<void> fetchPendapatan() async {
     final url = Uri.parse(
       'http://192.168.1.65:8000/api/gaji/${widget.userId}',
-    ); // ganti sesuai URL API kamu
+    );
+
     try {
       final response = await http.get(url);
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+
+        // Jika API mengembalikan list per periode
+        // Pastikan setiap item memiliki: periode_start, periode_end, total_pendapatan, jumlah_pekerjaan, status_terakhir
         setState(() {
-          totalPendapatan = (data['total_pendapatan'] ?? 0).toDouble();
-          jumlahPekerjaan = data['jumlah_pekerjaan'] ?? 0;
-          transaksi = List<Map<String, dynamic>>.from(data['data'] ?? []);
+          if (data['data'] != null && data['data'] is List) {
+            // Group data by periode jika perlu, atau langsung gunakan list API
+            periodeGaji = List<Map<String, dynamic>>.from(data['data']);
+          }
           _loading = false;
         });
       } else {
@@ -67,194 +69,80 @@ class _PendapatanPageState extends State<PendapatanPage> {
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator(color: Colors.white))
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // Card total pendapatan dan jumlah pekerjaan
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          color: Colors.orange,
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 16,
+          : periodeGaji.isEmpty
+              ? const Center(
+                  child: Text(
+                    "Belum ada gaji tersedia",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: periodeGaji.length,
+                  itemBuilder: (context, index) {
+                    final item = periodeGaji[index];
+
+                    // Fallback jika null
+                    final periodeStart = item['periode_start'] ?? '-';
+                    final periodeEnd = item['periode_end'] ?? '-';
+                    final totalPekerjaan = item['jumlah_pekerjaan'] ?? 0;
+                    final totalGaji = (item['total_pendapatan'] ?? 0).toDouble();
+                    final status = item['status_terakhir'] ?? '-';
+
+                    return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      color: Colors.orange,
+                      elevation: 5,
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Periode: $periodeStart s/d $periodeEnd",
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14,
+                              ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Total Pendapatan",
-                                  style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "Rp ${totalPendapatan.toStringAsFixed(0)}",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(height: 10),
+                            Text(
+                              "Total Pekerjaan: $totalPekerjaan",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Total Gaji: Rp ${totalGaji.toStringAsFixed(0)}",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              "Status Gaji: $status",
+                              style: TextStyle(
+                                color: status == 'Lunas'
+                                    ? Colors.greenAccent
+                                    : Colors.redAccent,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          color: Colors.green,
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 16,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "Pekerjaan Selesai",
-                                  style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "$jumlahPekerjaan",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      "Riwayat Uang Masuk",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  if (transaksi.isEmpty)
-                    const Text(
-                      "Belum ada data pendapatan.",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: transaksi.length,
-                    itemBuilder: (context, index) {
-                      final item = transaksi[index];
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        color: Colors.white,
-                        elevation: 3,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        child: ListTile(
-                          leading: const Icon(
-                            Icons.date_range,
-                            color: Colors.orange,
-                          ),
-                          title: Text(
-                            item['tanggal'] ?? '-',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          trailing: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Rp ${item['pendapatan']}",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                item['status'],
-                                style: TextStyle(
-                                  color: item['status'] == 'Lunas'
-                                      ? Colors.green
-                                      : Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                title: Text(
-                                  "Detail Pendapatan ${item['tanggal']}",
-                                ),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Pemesan: ${item['pemesanan']['nama_pemesan'] ?? '-'}",
-                                    ),
-                                    Text(
-                                      "Layanan: ${item['pemesanan']['layanan'] ?? '-'}",
-                                    ),
-                                    Text(
-                                      "Pendapatan: Rp ${item['pendapatan']}",
-                                    ),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text("OK"),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
+                    );
+                  },
+                ),
     );
   }
 }
