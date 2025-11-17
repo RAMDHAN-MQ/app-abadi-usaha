@@ -55,6 +55,8 @@ class PemesanAdminController extends Controller
             PemesananDetail::create([
                 'pemesanan_id' => $request->pemesanan_id,
                 'pekerja_id' => $id,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]);
         }
 
@@ -189,43 +191,50 @@ class PemesanAdminController extends Controller
 
     public function updateStatus($id, Request $request)
     {
+        // Ambil satu detail (untuk dapatkan pemesanan_id)
         $detail = PemesananDetail::find($id);
 
         if (!$detail) {
-            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+            return response()->json(['message' => 'Data detail tidak ditemukan'], 404);
         }
 
-        // Ambil relasi ke tabel pemesanan
         $pemesanan = $detail->detail_pemesanan_relasi;
 
         if (!$pemesanan) {
             return response()->json(['message' => 'Data pemesanan tidak ditemukan'], 404);
         }
 
-        // Ubah status pemesanan
         $pemesanan->status = $request->status ?? 'selesai';
         $pemesanan->save();
 
-        // Jika statusnya selesai → tambahkan ke tabel gaji
         if ($pemesanan->status === 'selesai') {
-            $pendapatan = $pemesanan->harga ?? 0; // ambil dari kolom harga pemesanan
-            $gaji_karyawan = $pendapatan * 0.7;   // contoh bagi hasil 70%
-            $gaji_admin = $pendapatan * 0.3;      // contoh bagi hasil 30%
 
-            Gaji::create([
-                'user_id' => $detail->pekerja_id,
-                'pemesanan_id' => $pemesanan->id,
-                'pendapatan' => $pendapatan,
-                'gaji_karyawan' => $gaji_karyawan,
-                'gaji_admin' => $gaji_admin,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            $pendapatan = $pemesanan->harga ?? 0;
+
+            $gaji_karyawan_total = $pendapatan * 0.2;
+            $gaji_admin_total    = $pendapatan * 0.1;
+
+            $pemesanan->gaji_admin = $gaji_admin_total;
+            $pemesanan->save();
+
+            $allDetails = PemesananDetail::where('pemesanan_id', $pemesanan->id)->get();
+
+            foreach ($allDetails as $row) {
+
+                $row->update([
+                    'gaji_karyawan'  => $gaji_karyawan_total,
+                    'updated_at'     => now(),
+                ]);
+
+            }
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Status berhasil diperbarui dan data gaji ditambahkan',
+            'message' => 'Status berhasil diperbarui & gaji dibagikan.',
         ]);
     }
+
+
+
 }

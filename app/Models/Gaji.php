@@ -14,9 +14,9 @@ class Gaji extends Model
     protected $fillable = [
         'user_id',
         'pemesanan_id',
-        'pendapatan',
-        'gaji_karyawan',
-        'gaji_admin',
+        'totalKaryawan',
+        'periode_start',
+        'periode_end',
         'status',
         'updated_at',
         'created_at',

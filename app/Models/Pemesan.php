@@ -20,6 +20,7 @@ class Pemesan extends Model
         'status',
         'harga',
         'ongkir',
+        'gaji_admin',
         'updated_at',
         'created_at',
     ];
