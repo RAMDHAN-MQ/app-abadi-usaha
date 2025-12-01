@@ -19,8 +19,8 @@ class Pemesan extends Model
         'alamat',
         'status',
         'harga',
-        'ongkir',
-        'gaji_admin',
+        'total',
+        'jarak_pipa',
         'updated_at',
         'created_at',
     ];

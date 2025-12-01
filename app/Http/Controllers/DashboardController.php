@@ -17,13 +17,13 @@ class DashboardController extends Controller
         // Pendapatan hari ini
         $todayIncome = Pemesan::whereDate('created_at', Carbon::today())
             ->where('status', 'selesai')
-            ->sum(DB::raw('harga + ongkir'));
+            ->sum(DB::raw('harga'));
 
         // Total pelanggan unik
         $totalCustomers = Pemesan::select('user_id')->distinct()->count();
 
         // Data chart keuntungan per bulan
-        $chartKeuntungan = Pemesan::selectRaw('MONTH(created_at) as bulan, SUM(harga + ongkir) as total')
+        $chartKeuntungan = Pemesan::selectRaw('MONTH(created_at) as bulan, SUM(harga) as total')
             ->where('status', 'selesai')
             ->groupBy('bulan')
             ->orderBy('bulan')

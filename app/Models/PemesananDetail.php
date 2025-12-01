@@ -16,10 +16,7 @@ class PemesananDetail extends Model
         'pemesanan_id',
         'pekerja_id',
         'verifikasi',
-        'gaji_karyawan',
         'alasan',
-        'created_at',
-        'updated_at',
     ];
 
     public function detail_pemesanan_relasi()

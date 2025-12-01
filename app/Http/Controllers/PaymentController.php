@@ -24,6 +24,7 @@ class PaymentController extends Controller
         // Ambil data layanan
         $layanan = Layanan::findOrFail($request->layanan);
         $harga = $layanan->harga;
+        $totalHarga = (int)$request->total_harga;
 
         // Simpan data pemesanan ke tabel `pemesanan`
         $pemesan = Pemesan::create([
@@ -32,16 +33,17 @@ class PaymentController extends Controller
             'layanan_id' => $layanan->id,
             'no_telp' => $request->no_telp,
             'alamat' => $request->alamat,
+            'jarak_pipa' => $request->jarak,
             'harga' => $harga,
-            'ongkir' => 0, // kalau belum ada ongkir
+            'total' => $totalHarga,
             'status' => 'pending',
         ]);
 
         // Data untuk Midtrans
         $params = [
             'transaction_details' => [
-                'order_id' => 'ORDER-' . $pemesan->id,
-                'gross_amount' => $harga,
+                'order_id' => 'ORDER-' . $pemesan->id . '-'. time(),
+                'gross_amount' => $totalHarga,
             ],
             'customer_details' => [
                 'first_name' => $pemesan->nama_pemesan,
@@ -54,8 +56,15 @@ class PaymentController extends Controller
                     'price' => $harga,
                     'quantity' => 1,
                     'name' => $layanan->nama_layanan,
+                ],
+                [
+                    'id' => 'JARAK',
+                    'price' => $totalHarga - $harga,   // selisih jarak
+                    'quantity' => 1,
+                    'name' => "Biaya tambahan jarak"
                 ]
             ]
+
         ];
 
         // Dapatkan Snap Token dari Midtrans

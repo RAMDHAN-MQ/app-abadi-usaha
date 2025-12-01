@@ -50,7 +50,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $pesanan->layanan_relasi->nama_layanan ?? 'Layanan Tidak Diketahui' }}</h5>
                                         <p class="mb-1"><strong>Alamat:</strong> {{ $pesanan->alamat }}</p>
-                                        <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->harga, 0, ',', '.') }}</p>
+                                        <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->total, 0, ',', '.') }}</p>
                                         <p class="mb-1"><strong>Tanggal:</strong> {{ $pesanan->updated_at }}</p>
                                         @if($pesanan->status == 'pending')
                                             <p class="mb-0"><span class="badge bg-warning text-dark">{{ $pesanan->status }}</span></p>
@@ -84,7 +84,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $pesanan->layanan_relasi->nama_layanan ?? 'Layanan Tidak Diketahui' }}</h5>
                                         <p class="mb-1"><strong>Alamat:</strong> {{ $pesanan->alamat }}</p>
-                                        <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->harga, 0, ',', '.') }}</p>
+                                        <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->total, 0, ',', '.') }}</p>
                                         <p class="mb-1"><strong>Tanggal:</strong> {{ $pesanan->updated_at }}</p>
                                         <p class="mb-0"><span class="badge bg-primary">Proses</span></p>
                                     </div>
@@ -101,7 +101,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $pesanan->layanan_relasi->nama_layanan ?? 'Layanan Tidak Diketahui' }}</h5>
                                         <p class="mb-1"><strong>Alamat:</strong> {{ $pesanan->alamat }}</p>
-                                        <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->harga, 0, ',', '.') }}</p>
+                                        <p class="mb-1"><strong>Harga:</strong> Rp {{ number_format($pesanan->total, 0, ',', '.') }}</p>
                                         <p class="mb-1"><strong>Tanggal:</strong> {{ $pesanan->updated_at }}</p>
                                         <p class="mb-0"><span class="badge bg-success">Selesai</span></p>
                                         @if($pesanan->testimoni_relasi->isEmpty())

@@ -72,12 +72,12 @@
             @csrf
 
             <div class="mb-3">
-                <label for="name" class="form-label">Nama</label>
+                <label for="name" class="form-label">Nama<span class="text-danger">*</span></label>
                 <input type="text" id="nama" name="nama" class="form-control" placeholder="Masukkan nama anda" value="{{ Auth::user()->name }}" required>
             </div>
 
             <div class="mb-3">
-                <label for="alamat" class="form-label">Alamat</label><br>
+                <label for="alamat" class="form-label">Alamat<span class="text-danger">*</span></label><br>
                 <button type="button" class="btn-maps mb-2" onclick="toggleMap()">📍 Pilih dengan Maps</button>
                 <div id="map"></div>
                 <textarea id="alamat" name="alamat" class="form-control mt-2" rows="3" placeholder="Masukkan alamat lengkap" required>{{ Auth::user()->alamat }}</textarea>
@@ -87,12 +87,12 @@
             </div>
 
             <div class="mb-3">
-                <label for="no_telp" class="form-label">Nomor HP</label>
+                <label for="no_telp" class="form-label">Nomor HP<span class="text-danger">*</span></label>
                 <input type="text" id="no_telp" name="no_telp" class="form-control" placeholder="Contoh: 0812xxxxxxxx" value="{{ Auth::user()->no_telp }}" required>
             </div>
 
             <div class="mb-3">
-                <label for="layanan" class="form-label">Jenis Layanan</label>
+                <label for="layanan" class="form-label">Jenis Layanan<span class="text-danger">*</span></label>
                 <select id="layanan" name="layanan" class="form-select" required>
                     <option value="" selected disabled>Pilih layanan...</option>
                     @foreach($layanan as $item)
@@ -101,9 +101,15 @@
                 </select>
             </div>
 
+            <div class="mb-3">
+                <label for="jarak" class="form-label">Perkiraan Jarak Antar Septic Tank dan Tempat Parkir Mobil (meter)<span class="text-danger">*</span></label>
+                <input type="text" id="jarak" name="jarak" class="form-control" placeholder="Contoh: 20" required>
+            </div>
+
             <div class="mb-4">
                 <label for="harga" class="form-label">Harga</label>
                 <input type="text" id="harga" name="harga" class="form-control" placeholder="Rp 0" readonly>
+                <input type="hidden" id="total_harga" name="total_harga">
             </div>
 
             <div class="d-flex justify-content-start gap-2">
@@ -259,6 +265,36 @@
             .catch(err => console.error('Error:', err));
         }
     </script>
+
+    <script>
+        const jarakInput = document.getElementById('jarak');
+
+        jarakInput.addEventListener('input', hitungTotalHarga);
+
+        function hitungTotalHarga() {
+            const selectedOption = layananSelect.options[layananSelect.selectedIndex];
+            const hargaDasar = parseInt(selectedOption.getAttribute('data-harga') || 0);
+            let jarak = parseInt(jarakInput.value || 0);
+
+            let tambahan = 0;
+
+            if (jarak > 25) {
+                let extraDistance = jarak - 25;
+                tambahan = Math.ceil(extraDistance / 15) * 50000;
+            }
+
+            const total = hargaDasar + tambahan;
+
+            hargaInput.value = formatRupiah(total);
+
+            document.getElementById('total_harga').value = total;
+        }
+
+
+        // jika layanan berubah, hitung ulang harga
+        layananSelect.addEventListener('change', hitungTotalHarga);
+    </script>
+
 
 </body>
 </html>

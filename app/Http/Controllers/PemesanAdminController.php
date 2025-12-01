@@ -34,6 +34,7 @@ class PemesanAdminController extends Controller
             'no_telp' => $request->no_telp,
             'alamat' => $request->alamat,
             'status' => 'pending',
+            'jarak_pipa' => $request->jarak,
             'harga' => $request->harga,
             'created_at' => now(),
             'updated_at' => now(),
@@ -55,8 +56,6 @@ class PemesanAdminController extends Controller
             PemesananDetail::create([
                 'pemesanan_id' => $request->pemesanan_id,
                 'pekerja_id' => $id,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
         }
 
@@ -191,11 +190,10 @@ class PemesanAdminController extends Controller
 
     public function updateStatus($id, Request $request)
     {
-        // Ambil satu detail (untuk dapatkan pemesanan_id)
         $detail = PemesananDetail::find($id);
 
         if (!$detail) {
-            return response()->json(['message' => 'Data detail tidak ditemukan'], 404);
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
 
         $pemesanan = $detail->detail_pemesanan_relasi;
@@ -208,33 +206,34 @@ class PemesanAdminController extends Controller
         $pemesanan->save();
 
         if ($pemesanan->status === 'selesai') {
-
             $pendapatan = $pemesanan->harga ?? 0;
-
-            $gaji_karyawan_total = $pendapatan * 0.2;
-            $gaji_admin_total    = $pendapatan * 0.1;
-
-            $pemesanan->gaji_admin = $gaji_admin_total;
-            $pemesanan->save();
-
-            $allDetails = PemesananDetail::where('pemesanan_id', $pemesanan->id)->get();
-
-            foreach ($allDetails as $row) {
-
-                $row->update([
-                    'gaji_karyawan'  => $gaji_karyawan_total,
-                    'updated_at'     => now(),
-                ]);
-
+            if ($pemesanan->layanan_id == 2) {
+                $gaji_karyawan = 75000;
+            } else {
+                $gaji_karyawan = 125000;
             }
+
+            $semuaDetail = PemesananDetail::where('pemesanan_id', $pemesanan->id)->get();
+
+            foreach ($semuaDetail as $d) {
+                // Set semua verifikasi pekerja menjadi selesai
+                $d->verifikasi = 'selesai';
+                $d->save();
+
+                Gaji::create([
+                    'user_id' => $d->pekerja_id,
+                    'pemesanan_id' => $pemesanan->id,
+                    'pendapatan' => $pendapatan,
+                    'gaji_karyawan' => $gaji_karyawan,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status berhasil diperbarui dan data gaji ditambahkan',
+            ]);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Status berhasil diperbarui & gaji dibagikan.',
-        ]);
     }
-
-
-
 }

@@ -28,6 +28,14 @@
                 <td>Rp{{ number_format($pemesanan->harga, 0, ',', '.') }}</td>
             </tr>
             <tr>
+                <td>Jarak</td>
+                <td>{{ $pemesanan->jarak_pipa }}m</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>Rp{{ number_format($pemesanan->total, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
                 <td>Pekerja</td>
                 <td>
                     @forelse($pekerja as $item)
