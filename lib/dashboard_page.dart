@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'riwayat_page.dart';
-import 'pendapatan_page.dart'; // import halaman baru
+import 'pendapatan_page.dart';
 import 'profil_page.dart';
 
 class DashboardPage extends StatefulWidget {
